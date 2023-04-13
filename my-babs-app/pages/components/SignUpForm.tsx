@@ -3,6 +3,7 @@
 import { useState } from "react"
 import axios from 'axios'
 import Link from "next/link"
+import Router from "next/router"
 
 interface FormProps {
   email: string,
@@ -32,6 +33,7 @@ export default function SignUpForm() {
       const res = await axios.post('/api/signup', form)
       console.log("Form submitted", res)
       setForm(initialForm)
+      Router.push('/login')
     } catch (error) {
       console.log("Error submitting form", error)
     }

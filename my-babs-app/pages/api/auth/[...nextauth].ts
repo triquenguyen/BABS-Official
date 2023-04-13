@@ -39,8 +39,7 @@ export default NextAuth({
           return {
             id: userExists.id,
             email: userExists.email,
-            firstName: userExists.firstName,
-            lastName: userExists.lastName
+            name: userExists.firstName + " " + userExists.lastName,
           }
 
         } catch (error) {
@@ -61,6 +60,7 @@ export default NextAuth({
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },
@@ -68,9 +68,7 @@ export default NextAuth({
     async session({ session, token }) {
       session.user = { 
         email: token.email,
-        id: token.id,
-        firstName: token.firstName,
-        lastName: token.lastName
+        name: token.name,
       };
       return session;
     },
