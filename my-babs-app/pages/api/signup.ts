@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { prisma } from '@/libs/prisma';
-import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 interface UserReq {
@@ -21,9 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       const userExists = await prisma.user.findUnique({
-        where: {
-          email: email,
-        },
+        where: { email: email },
       });
 
       if (userExists) {
@@ -33,13 +30,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-
-      // const userData: Prisma.UserCreateInput = {
-      //   firstName: reqData.firstName,
-      //   lastName: reqData.lastName,
-      //   email: reqData.email,
-      //   password: hashedPassword,
-      // };
 
       await prisma.user.create(
         {
