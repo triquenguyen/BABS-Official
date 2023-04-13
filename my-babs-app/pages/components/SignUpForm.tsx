@@ -66,7 +66,6 @@ export default function SignUpForm() {
         <button type="submit" className="px-3 py-2 bg-[#69C9D0] rounded-md text-white w-[25%]">Sign Up</button>
         <p className="text-white">Already have an account? <Link href="/login" className="underline underline-offset-2">Login Here</Link></p>
       </form>
-
     </div>
   )
 }

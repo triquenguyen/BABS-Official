@@ -16,7 +16,7 @@ model User {
   lastName      String
   email         String         @unique
   password      String
-  totalAmount   Int            @default(0)
+  balance       Int            @default(0)
   totalDeposit  Int            @default(0)
   totalWithdraw Int            @default(0)
   totalTransfer Int            @default(0)
