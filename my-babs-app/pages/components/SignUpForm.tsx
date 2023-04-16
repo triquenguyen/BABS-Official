@@ -10,13 +10,15 @@ interface FormProps {
   firstName: string,
   lastName: string,
   password: string,
+  pincode: string
 }
 
 const initialForm: FormProps = {
   email: '',
   firstName: '',
   lastName: '',
-  password: ''
+  password: '',
+  pincode: ''
 }
 
 export default function SignUpForm() {
@@ -62,6 +64,10 @@ export default function SignUpForm() {
         <label className="text-[#69C9D0] flex flex-col">
           Password
           <input type="password" name="password" value={form.password} onChange={handleChange} className="bg-[rgba(255,255,255,0.2)] w-[360px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2" />
+        </label>
+        <label className="text-[#69C9D0] flex flex-col">
+          PIN Code
+          <input type="password" name="pincode" value={form.pincode} onChange={handleChange} className="bg-[rgba(255,255,255,0.2)] w-[360px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2" />
         </label>
         <button type="submit" className="px-3 py-2 bg-[#69C9D0] rounded-md text-white w-[25%]">Sign Up</button>
         <p className="text-white">Already have an account? <Link href="/login" className="underline underline-offset-2">Login Here</Link></p>

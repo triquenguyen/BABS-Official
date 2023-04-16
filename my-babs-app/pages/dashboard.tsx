@@ -6,7 +6,7 @@ import Navbar from './components/NavBar';
 import Image from 'next/image';
 import DepositCheck from './components/DepositCheck';
 
-export default function dashboard() {
+export default function Dashboard() {
   const { status, data: session } = useSession();
 
   if (!session) {
@@ -25,3 +25,4 @@ export default function dashboard() {
   )
 }
 
+Dashboard.auth=true
