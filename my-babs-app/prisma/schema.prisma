@@ -16,6 +16,7 @@ model User {
   lastName      String
   email         String         @unique
   password      String
+  pincode       String
   balance       Int            @default(0)
   totalDeposit  Int            @default(0)
   totalWithdraw Int            @default(0)
