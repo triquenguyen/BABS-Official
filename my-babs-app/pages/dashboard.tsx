@@ -1,14 +1,19 @@
+"use client"
+
 import { useSession, signOut, getSession } from 'next-auth/react';
 import Navbar from './components/NavBar';
 import Image from 'next/image';
 import DepositCheck from './components/DepositCheck';
 import { GetServerSideProps } from 'next';
-import { useEffect, useState } from 'react';
 import { prisma } from '../libs/prisma';
+import { Balance } from './components/Balance';
+import { TotalTransfer } from './components/TotalTransfer';
+import { TotalWithdraw } from './components/TotalWithdraw';
+import { TotalDeposit } from './components/TotalDeposit';
 
-export default function dashboard({ balance, totalDeposits, totalWithdraw}) {
+export default function dashboard({ balance, totalDeposits, totalWithdraw }) {
   const { status, data: session } = useSession();
-  
+
   const handleSignout = () => {
     signOut({ redirect: true, callbackUrl: '/login' })
   }
@@ -23,9 +28,10 @@ export default function dashboard({ balance, totalDeposits, totalWithdraw}) {
       <div className="px-8 py-4">
         <Navbar username={session.user?.name} />
         <DepositCheck id={session.user?.id} />
+        {/* <Balance amount={balance} />
+        <TotalDeposit amount={totalDeposits} />
+        <TotalWithdraw amount={totalWithdraw} /> */}
         <h1>Balance {balance}</h1>
-        <h1>Total Deposits {totalDeposits}</h1>
-        <h1>Total Withdrawals {totalWithdraw}</h1>
         <button className="px-3 py-2 bg-[#69C9D0] bg-opacity-70 rounded-md text-white" onClick={handleSignout}>Sign Out</button>
       </div>
     </div>
