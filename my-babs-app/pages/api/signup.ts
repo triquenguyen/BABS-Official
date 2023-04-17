@@ -7,14 +7,15 @@ interface UserReq {
   lastName: string;
   email: string;
   password: string;
+  pincode: string;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.method === 'POST') {
-    const { email, firstName, lastName, password } = await req.body as UserReq;
+    const { email, firstName, lastName, password, pincode } = await req.body as UserReq;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !pincode) {
       return res.status(400).json({ message: 'Email and password are required' })
     }
 
@@ -38,6 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             lastName: lastName,
             email: email,
             password: hashedPassword,
+            pincode: pincode,
           }
         });
 
