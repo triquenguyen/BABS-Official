@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { FormEventHandler, useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import Router from 'next/router'
 
 interface DepositProps {
   amount: number
@@ -15,6 +16,10 @@ const initialDeposit: DepositProps = {
 export default function DepositCheck({ id }) {
   const [form, setForm] = useState<DepositProps>(initialDeposit)
 
+  const refreshData = () => {
+    Router.replace(Router.asPath)
+  }
+
   useEffect(() => {
     if (id) {
       setForm({ ...form, id: id })
@@ -26,13 +31,17 @@ export default function DepositCheck({ id }) {
     setForm(prevState => ({ ...prevState, [name]: value }))
   }
 
-  const handleDeposit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleDeposit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    const res = await axios.post('/api/deposit', form)
-
-    if (res.status === 200) {
-      console.log('deposit successful')
+    try {
+      const res = await axios.post('/api/deposit', form)
+      if (res.status === 200) {
+        console.log("Form submitted", res)
+        setForm(initialDeposit)
+      }
+    } catch (error) {
+      console.log('Error submitting form', error)
     }
   }
 
