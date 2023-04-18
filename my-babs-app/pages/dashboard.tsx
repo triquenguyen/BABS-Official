@@ -11,7 +11,7 @@ import { TotalTransfer } from './components/TotalTransfer';
 import { TotalWithdraw } from './components/TotalWithdraw';
 import { TotalDeposit } from './components/TotalDeposit';
 
-export default function dashboard({ balance, totalDeposits, totalWithdraw }) {
+export default function Dashboard({ balance, totalDeposits, totalWithdraw }) {
   const { status, data: session } = useSession();
 
   const handleSignout = () => {
@@ -38,6 +38,7 @@ export default function dashboard({ balance, totalDeposits, totalWithdraw }) {
   )
 }
 
+Dashboard.auth=true
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 

@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             lastName: lastName,
             email: email,
             password: hashedPassword,
-            pincode: pincode,
+            pincode: pincode
           }
         });
 

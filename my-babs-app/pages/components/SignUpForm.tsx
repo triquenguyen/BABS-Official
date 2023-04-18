@@ -10,7 +10,7 @@ interface FormProps {
   firstName: string,
   lastName: string,
   password: string,
-  pincode: string;
+  pincode: string
 }
 
 const initialForm: FormProps = {
