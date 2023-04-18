@@ -44,7 +44,7 @@ export default function SignUpForm() {
   return (
     <div className="flex flex-col items-center gap-[16px] ">
       <h1 className="text-[42px] font-bold text-[#69C9D0] mt-[4px]">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] items-center ">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[14px] items-center ">
         <div className="flex gap-[20px]">
           <label className="text-[#69C9D0] flex flex-col">
             First Name
@@ -66,7 +66,7 @@ export default function SignUpForm() {
           <input type="password" name="password" value={form.password} onChange={handleChange} className="bg-[rgba(255,255,255,0.2)] w-[360px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2" />
         </label>
         <label className="text-[#69C9D0] flex flex-col">
-          PIN Code
+          Pincode
           <input type="password" name="pincode" value={form.pincode} onChange={handleChange} className="bg-[rgba(255,255,255,0.2)] w-[360px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2" />
         </label>
         <button type="submit" className="px-3 py-2 bg-[#69C9D0] rounded-md text-white w-[25%]">Sign Up</button>
