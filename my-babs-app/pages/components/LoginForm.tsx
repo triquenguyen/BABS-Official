@@ -16,7 +16,7 @@ const initialForm: FormProps = {
   password: ''
 }
 
-export default function LogInForm({withCreate = true, callbackUrl = '/dashboard'}) {
+export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard' }) {
   const router = useRouter()
   const [form, setForm] = useState<FormProps>(initialForm)
 
@@ -29,11 +29,15 @@ export default function LogInForm({withCreate = true, callbackUrl = '/dashboard'
     e.preventDefault()
 
     const res = await signIn('credentials', {
-      redirect: true,
+      redirect: false,
       callbackUrl: callbackUrl,
       email: form.email,
       password: form.password
     })
+
+    if (res?.error) {
+      alert(res.error)
+    }
 
     setForm(initialForm)
   }
