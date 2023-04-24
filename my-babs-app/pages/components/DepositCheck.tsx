@@ -59,6 +59,8 @@ export default function DepositCheck({ handleClose, id }) {
       if (res.status === 200) {
         console.log("Form submitted", res)
         setForm(initialDeposit)
+      } else {
+        alert(res.statusText)
       }
     } catch (error) {
       console.log('Error submitting form', error)

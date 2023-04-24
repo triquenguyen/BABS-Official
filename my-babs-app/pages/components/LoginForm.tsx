@@ -35,6 +35,10 @@ export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard
       password: form.password
     })
 
+    if (res?.ok) {
+      router.push("/dashboard")
+    }
+
     if (res?.error) {
       alert(res.error)
     }
