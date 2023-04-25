@@ -1,7 +1,11 @@
 import Link from "next/link"
 import Image from "next/image"
+import { signOut } from "next-auth/react"
 
-export default function Navbar({ username }) {
+export default function Navbar({ username, callbackUrl = "/login" }) {
+  const handleSignout = () => {
+    signOut({ redirect: true, callbackUrl: callbackUrl })
+  }
   return (
     <div className="flex items-center justify-items-center h-16">
       <Link href="/" className="mr-auto items-center"><Image src="/babs-logo.svg" alt="logo" width={200} height={50} /></Link>
@@ -10,7 +14,7 @@ export default function Navbar({ username }) {
         <h1 className='text-black'>{username}</h1>
         <Image src="/account.png" alt="logo" height={100} width={100} className="w-10 h-10"/>
       </Link>
-
+      <button className="px-3 py-2 bg-[#69C9D0] bg-opacity-70 rounded-md text-white" onClick={handleSignout}>Sign Out</button>
     </div>
   )
 }

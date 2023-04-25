@@ -36,7 +36,7 @@ export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard
     })
 
     if (res?.ok) {
-      router.push("/dashboard")
+      router.push(callbackUrl)
     }
 
     if (res?.error) {
