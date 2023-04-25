@@ -47,10 +47,10 @@ export default function dashboard({ balance, totalDeposit, totalWithdraw }) {
   return (
     <div>
       <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block min-h-screen z-[-1]" alt='bg' />
-      <div className="px-8 py-4">
+      <div className="px-16 py-6">
         <Navbar username={session.user?.name} />
         
-        <div className="flex gap-6">
+        <div className="mt-4 flex gap-8">
           <Balance amount={balance} />
           <DepositBtn />
           <TransferBtn />

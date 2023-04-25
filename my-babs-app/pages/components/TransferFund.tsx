@@ -4,6 +4,8 @@ import Router from 'next/router'
 import { motion } from 'framer-motion'
 import Backdrop from './Backdrop'
 import Image from 'next/image'
+import { useDispatch } from 'react-redux'
+import { setShowTransfer } from '../redux/showTransferSlice'
 
 interface TransferProps {
   amount: number
@@ -37,6 +39,7 @@ const dropIn = {
 
 export default function TransferFund({ handleClose, id }) {
   const [form, setForm] = useState<TransferProps>(initialTransfer)
+  const dispatch = useDispatch()
 
   const refreshData = () => {
     Router.replace(Router.asPath)
@@ -61,9 +64,12 @@ export default function TransferFund({ handleClose, id }) {
       if (res.status === 200) {
         console.log("Form submitted", res)
         setForm(initialTransfer)
+        dispatch(setShowTransfer(false))
+        alert(res.data.message)
+        refreshData()
       }
     } catch (error) {
-      console.log('Error submitting form', error)
+      alert(error.response.data.message)
     }
   }
 

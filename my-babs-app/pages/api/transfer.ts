@@ -14,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const user = await prisma.user.findUnique({
         where: { id: id },
         select: {
-          balance: true
+          balance: true,
+          email: true,
         }
       })
 
@@ -22,6 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { email: String(receiverEmail) },
         select: {
           email: true,
+          balance: true,
         }
       })
 
@@ -35,13 +37,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return
       }
 
+      const userCurrBalance = user?.balance
+      const receiverCurrBalance = receiver?.balance
+
       await prisma.user.update({
         where: { id: id },
         data: {
           balance: {
             decrement: Number(amount)
           },
-        },
+          totalTransfer: {
+            increment: Number(amount)
+          },
+          transactions: {
+            create: {
+              amount: Number(amount),
+              transactionType: 'Transfer',
+              createdAt: new Date(),
+              accountBefore: Number(userCurrBalance),
+              accountAfter: Number(Number(userCurrBalance) - Number(amount)),
+              receiverEmail: String(receiverEmail),
+            }
+          }
+        }
       })
 
       await prisma.user.update({
@@ -50,10 +68,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           balance: {
             increment: Number(amount)
           },
-        },
+          transactions: {
+            create: {
+              amount: Number(amount),
+              transactionType: 'Transfer',
+              createdAt: new Date(),
+              accountBefore: Number(receiverCurrBalance),
+              accountAfter: Number(Number(receiverCurrBalance) + Number(amount)),
+              senderEmail: String(user?.email),
+            },
+          }
+        }
       })
 
-      res.status(200).json({ message: `Transfer successfully` })
+      res.status(200).json({ message: `Transaction succeeded!` })
       return
     } catch (error) {
       console.log(error)

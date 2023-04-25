@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { amount, id } = await req.body as { amount: number, id: number }
 
     if (amount <= 0) {
-      res.status(400).json({ message: 'Amount is required' })
+      res.status(400).json({ message: 'Amount is not valid! Please enter a valid amount' })
       return
     }
 
@@ -22,9 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
 
       if (user?.balance < amount) {
-        res.status(400).json({ message: 'Insufficient funds' })
+        res.status(400).json({ message: `Your current balance is ${user?.balance}. Please withdraw a valid amount` })
         return
       }
+
+      const currBalance = user?.balance
 
       await prisma.user.update({
         where: { id: id },
@@ -32,11 +34,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           balance: {
             decrement: Number(amount)
           },
+          totalWithdraw: {
+            increment: Number(amount)
+          },
+          transactions: {
+            create: {
+              amount: Number(amount),
+              transactionType: 'Withdraw',
+              createdAt: new Date(),
+              accountBefore: Number(currBalance),
+              accountAfter: Number(Number(currBalance) - Number(amount))
+            }
+          }
         },
       })
 
 
-      res.status(200).json({ message: `Balance is updated` })
+      res.status(200).json({ message: `Transaction succeeded!` })
       return
 
 

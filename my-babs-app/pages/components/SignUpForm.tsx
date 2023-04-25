@@ -39,7 +39,7 @@ export default function SignUpForm() {
       setForm(initialForm)
       Router.push('/login')
     } catch (error) {
-      console.log("Error submitting form", error)
+      alert(error.response.data.message)
     }
   }
 

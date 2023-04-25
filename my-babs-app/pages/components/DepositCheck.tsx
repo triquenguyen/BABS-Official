@@ -4,6 +4,8 @@ import Router from 'next/router'
 import { motion } from 'framer-motion'
 import Backdrop from './Backdrop'
 import Image from 'next/image'
+import { useDispatch } from 'react-redux'
+import { setShow } from '../redux/showSlice'
 
 interface DepositProps {
   amount: number
@@ -35,6 +37,7 @@ const dropIn = {
 
 export default function DepositCheck({ handleClose, id }) {
   const [form, setForm] = useState<DepositProps>(initialDeposit)
+  const dispatch = useDispatch()
 
   const refreshData = () => {
     Router.replace(Router.asPath)
@@ -59,11 +62,12 @@ export default function DepositCheck({ handleClose, id }) {
       if (res.status === 200) {
         console.log("Form submitted", res)
         setForm(initialDeposit)
-      } else {
-        alert(res.statusText)
-      }
+        dispatch(setShow(false))
+        alert(res.data.message)
+        refreshData()
+      } 
     } catch (error) {
-      console.log('Error submitting form', error)
+      alert(error.response.data.message)
     }
   }
 
