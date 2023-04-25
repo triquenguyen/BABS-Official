@@ -7,10 +7,21 @@ import DepositCheck from '../components/DepositCheck';
 import Navbar from '../components/NavBar';
 import Balance from '../components/Balance';
 import { prisma } from '../../libs/prisma';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/libs/store';
+import Withdraw from '../components/Withdraw';
+import DepositBtn from '../components/DepositBtn';
+import WithdrawBtn from '../components/WithdrawBtn';
+import { setShow } from '../redux/showSlice';
+import { setShowWithdraw } from '../redux/showWithdrawSlice';
 
-export default function ATMDashboard({balance, totalDeposit, totalWithdraw}) {
+export default function ATMDashboard({ balance, totalDeposit, totalWithdraw }) {
     const { status, data: session } = useSession();
-
+    const show = useSelector((state: RootState) => state.show.show)
+    const showWithdraw = useSelector((state: RootState) => state.showWithdraw.showWithdraw)
+    const dispatch = useDispatch()
+    const close = () => { dispatch(setShow(false)) }
+    const closeWithdraw = () => { dispatch(setShowWithdraw(false)) }
     if (!session) {
         return <h1>you gotta log in {status}</h1>;
     }
@@ -20,42 +31,48 @@ export default function ATMDashboard({balance, totalDeposit, totalWithdraw}) {
             <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block w-[100%] z-[-1]" alt='bg' />
             <div className="px-8 py-4">
                 <Navbar username={session.user?.name} callbackUrl='/atm/login' />
-                <Balance amount={balance} />
+                <div className="flex gap-6">
+                    <Balance amount={balance} />
+                    <DepositBtn />
+                    <WithdrawBtn />
+                </div>
+                {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} />}
+                {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} />}
             </div>
         </div>
     )
 }
 
-ATMDashboard.auth=true
+ATMDashboard.auth = true
 
 export async function getServerSideProps(context) {
     const session = await getSession(context);
-  
+
     if (session) {
-      const user = await prisma.user.findUnique({
-        where: {
-          id: session?.user?.id
-        }, select: {
-          balance: true,
-          totalDeposit: true,
-          totalWithdraw: true
+        const user = await prisma.user.findUnique({
+            where: {
+                id: session?.user?.id
+            }, select: {
+                balance: true,
+                totalDeposit: true,
+                totalWithdraw: true
+            }
+        })
+
+        return {
+            props: {
+                balance: user?.balance,
+                totalDeposit: user?.totalDeposit,
+                totalWithdrawals: user?.totalWithdraw
+            }
         }
-      })
-  
-      return {
-        props: {
-          balance: user?.balance,
-          totalDeposit: user?.totalDeposit,
-          totalWithdrawals: user?.totalWithdraw
-        }
-      }
     } else {
-      return {
-        props: {
-          balance: 0,
-          totalDeposits: 0,
-          totalWithdrawals: 0
+        return {
+            props: {
+                balance: 0,
+                totalDeposits: 0,
+                totalWithdrawals: 0
+            }
         }
-      }
     }
-  }
+}

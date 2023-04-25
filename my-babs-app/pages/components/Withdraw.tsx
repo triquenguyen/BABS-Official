@@ -33,7 +33,7 @@ const dropIn = {
   }
 }
 
-export default function DepositCheck({ handleClose, id }) {
+export default function Withdraw({ handleClose, id }) {
   const [form, setForm] = useState<WithdrawProps>(initialWithdraw)
 
   const refreshData = () => {
