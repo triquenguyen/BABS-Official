@@ -13,6 +13,7 @@ import { setShow } from './redux/showSlice';
 import { RootState } from '@/libs/store';
 import { setShowTransfer } from './redux/showTransferSlice';
 import { setShowWithdraw } from './redux/showWithdrawSlice';
+import { setShowTransaction } from './redux/showTransactionSlice';
 
 import Balance from './components/Balance';
 import TotalTransfer from './components/TotalTransfer';
@@ -24,16 +25,21 @@ import DepositCheck from './components/DepositCheck';
 import TransferFund from './components/TransferFund';
 import WithdrawBtn from './components/WithdrawBtn';
 import Withdraw from './components/Withdraw';
+import TransactionCard from './components/TransactionCard';
+import Transaction from './components/Transaction';
+import TransactionBtn from './components/TransactionBtn';
 
 export default function dashboard({ balance, totalDeposit, totalWithdraw }) {
   const { status, data: session } = useSession();
   const show = useSelector((state:RootState) => state.show.show)
   const showTransfer = useSelector((state:RootState) => state.showTransfer.showTransfer)
   const showWithdraw = useSelector((state:RootState) => state.showWithdraw.showWithdraw)
+  const showTransaction = useSelector((state:RootState) => state.showTransaction.showTransaction)
   const dispatch = useDispatch()
   const close = () => {dispatch(setShow(false))}
   const closeTransfer = () => {dispatch(setShowTransfer(false))}
   const closeWithdraw = () => {dispatch(setShowWithdraw(false))}
+  const closeTransaction = () => {dispatch(setShowTransaction(false))}
 
 
   const handleSignout = () => {
@@ -55,6 +61,7 @@ export default function dashboard({ balance, totalDeposit, totalWithdraw }) {
           <DepositBtn />
           <TransferBtn />
           <WithdrawBtn />
+          <TransactionBtn />
         </div>
         
         <button className="px-3 py-2 bg-[#69C9D0] bg-opacity-70 rounded-md text-white" onClick={handleSignout}>Sign Out</button>
@@ -63,7 +70,7 @@ export default function dashboard({ balance, totalDeposit, totalWithdraw }) {
       {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} />}
       {showTransfer && <TransferFund showTransfer={showTransfer} handleClose={closeTransfer} id={session.user?.id} />}
       {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} />}
-
+      {showTransaction && <Transaction showTransaction={showTransaction} handleClose={closeTransaction} id={session.user?.id} />}
     </div>
   )
 }
