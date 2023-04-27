@@ -5,13 +5,13 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import DepositCheck from '../components/Deposit/DepositCheck';
 import Navbar from '../components/NavBar';
-import Balance from '../components/Balance';
+import Balance from '../components/Statistic/Balance';
 import { prisma } from '../../libs/prisma';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/libs/store';
-import Withdraw from '../components/Withdraw';
-import DepositBtn from '../components/DepositBtn';
-import WithdrawBtn from '../components/WithdrawBtn';
+import Withdraw from '../components/Withdraw/Withdraw';
+import DepositBtn from '../components/Deposit/DepositBtn';
+import WithdrawBtn from '../components/Withdraw/WithdrawBtn';
 import { setShow } from '../redux/showSlice';
 import { setShowWithdraw } from '../redux/showWithdrawSlice';
 
