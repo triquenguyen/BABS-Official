@@ -12,12 +12,12 @@ interface UserReq {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
+  
   if (req.method === 'POST') {
     const { email, firstName, lastName, password, confirmPass, pincode } = await req.body as UserReq;
 
     if (!firstName || !lastName || !email || !password || !pincode || !confirmPass) {
-      return res.status(400).json({ message: 'Email and password are required' })
+      return res.status(400).json({ message: 'Please enter all fields!' })
     }
 
     if (password == confirmPass) {
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (userExists) {
-          res.status(400).json({ message: 'User already exists' })
+          res.status(400).json({ message: 'This email has been used! Please log in with this email or sign up with another email' })
           return
         }
 
@@ -59,5 +59,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else {
     res.status(405).end('Method Not Allowed')
     return
-  }
+  } 
 }

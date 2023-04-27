@@ -3,7 +3,7 @@ import Router from 'next/router';
 import loadConfig from "next/dist/server/config";
 import { useEffect } from 'react';
 import Image from 'next/image';
-import DepositCheck from '../components/DepositCheck';
+import DepositCheck from '../components/Deposit/DepositCheck';
 import Navbar from '../components/NavBar';
 import Balance from '../components/Balance';
 import { prisma } from '../../libs/prisma';

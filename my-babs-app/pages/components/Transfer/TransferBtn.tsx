@@ -1,21 +1,22 @@
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { useDispatch, useSelector } from "react-redux"
-import { setShow } from "../redux/showSlice"
+import { setShow } from "../../redux/showSlice"
 import { RootState } from "@/libs/store"
+import { setShowTransfer } from "../../redux/showTransferSlice"
 
 export default function DepositBtn() {
   const dispatch = useDispatch()
-  const show = useSelector((state:RootState) => state.show.show)
+  const showTransfer = useSelector((state: RootState) => state.showTransfer.showTransfer)
 
   return (
-    <motion.div 
+    <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => show ? dispatch(setShow(false)) : dispatch(setShow(true)) }
+      onClick={() => showTransfer ? dispatch(setShowTransfer(false)) : dispatch(setShowTransfer(true))}
       className="flex p-8 bg-[#69C9D0] bg-opacity-70 rounded-md flex-col items-center justify-center gap-4">
-      <Image src="/deposit_check_icon.svg" width={140} height={100}alt='bg' />
-      <button className="">Deposit Checks</button>
+      <Image src="/transfer_icon.svg" width={75} height={100} alt='bg' />
+      <button className="">Transfer Funds</button>
     </motion.div>
   )
 }

@@ -2,17 +2,21 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import { motion } from 'framer-motion'
-import Backdrop from './Backdrop'
+import Backdrop from '../Backdrop'
 import Image from 'next/image'
+import { useDispatch } from 'react-redux'
+import { setShowTransfer } from '../../redux/showTransferSlice'
 
-interface WithdrawProps {
+interface TransferProps {
   amount: number
   id: number
+  receiverEmail: string
 }
 
-const initialWithdraw: WithdrawProps = {
+const initialTransfer: TransferProps = {
   amount: 0,
-  id: 0
+  id: 0,
+  receiverEmail: ''
 }
 
 const dropIn = {
@@ -33,8 +37,9 @@ const dropIn = {
   }
 }
 
-export default function Withdraw({ handleClose, id }) {
-  const [form, setForm] = useState<WithdrawProps>(initialWithdraw)
+export default function TransferFund({ handleClose, id }) {
+  const [form, setForm] = useState<TransferProps>(initialTransfer)
+  const dispatch = useDispatch()
 
   const refreshData = () => {
     Router.replace(Router.asPath)
@@ -44,7 +49,7 @@ export default function Withdraw({ handleClose, id }) {
     if (id) {
       setForm({ ...form, id: id })
     }
-  }, [id])
+  }, [form, id])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -55,13 +60,16 @@ export default function Withdraw({ handleClose, id }) {
     e.preventDefault()
 
     try {
-      const res = await axios.post('/api/withdraw', form)
+      const res = await axios.post('/api/transfer', form)
       if (res.status === 200) {
         console.log("Form submitted", res)
-        setForm(initialWithdraw)
+        setForm(initialTransfer)
+        dispatch(setShowTransfer(false))
+        alert(res.data.message)
+        refreshData()
       }
     } catch (error) {
-      console.log('Error submitting form', error)
+      alert(error.response.data.message)
     }
   }
 
@@ -77,14 +85,22 @@ export default function Withdraw({ handleClose, id }) {
       >
         <Image src='/close.png' width={25} height={25} alt='bg' onClick={handleClose} className='ml-auto hover:scale-110 active:scale-90' />
 
-        <h1 className='text-2xl text-white'>Withdraw Money</h1>
+        <h1 className='text-2xl text-[#69C9D0]'>Transfer Funds</h1>
         <form onSubmit={handleDeposit} className="flex flex-col gap-6">
           <input
             type="number"
             value={form.amount}
             name='amount'
             onChange={handleChange}
-            placeholder='Amount to Deposit'
+            placeholder='Amount to Transfer'
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+          <input
+            type="email"
+            value={form.receiverEmail}
+            name='receiverEmail'
+            onChange={handleChange}
+            placeholder='Receiver Email'
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
 
@@ -94,7 +110,7 @@ export default function Withdraw({ handleClose, id }) {
             whileTap={{ scale: 0.95 }}
             className="px-3 py-2 bg-[#69C9D0] rounded-md text-white"
           >
-            Withdraw
+            Transfer
           </motion.button>
         </form>
       </motion.div>

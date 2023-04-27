@@ -4,7 +4,7 @@ import { FormEventHandler, useState } from "react"
 import { signIn } from "next-auth/react"
 import axios from 'axios'
 import Link from 'next/link'
-import { useRouter } from "next/router"
+import Router from 'next/router'
 
 interface FormProps {
   email: string
@@ -17,7 +17,6 @@ const initialForm: FormProps = {
 }
 
 export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard' }) {
-  const router = useRouter()
   const [form, setForm] = useState<FormProps>(initialForm)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +35,7 @@ export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard
     })
 
     if (res?.ok) {
-      router.push(callbackUrl)
+      Router.push(callbackUrl)
     }
 
     if (res?.error) {
