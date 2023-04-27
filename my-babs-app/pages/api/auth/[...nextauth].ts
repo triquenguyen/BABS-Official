@@ -40,6 +40,7 @@ export default NextAuth({
             id: userExists.id,
             email: userExists.email,
             name: userExists.firstName + " " + userExists.lastName,
+            pincode: userExists.pincode
           }
 
         } catch (error) {
@@ -56,11 +57,24 @@ export default NextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.pincode = false;
+      }
+      if (trigger === "update" && session?.pincode)
+      {
+        const userExists = await prisma.user.findUnique({
+          where: {
+            id: token.id
+          },
+        });
+        if (userExists?.pincode === session?.pincode)
+        {
+          token.pincode = true;
+        }
       }
       return token;
     },
@@ -70,6 +84,7 @@ export default NextAuth({
         id: token.id,
         email: token.email,
         name: token.name,
+        pincode: token.pincode
       };
       return session;
     },

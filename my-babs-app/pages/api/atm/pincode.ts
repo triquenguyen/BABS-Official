@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { prisma } from '@/libs/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from "next-auth/jwt";
+import { getServerSession } from "next-auth";
 
 interface UserReq {
     pincode: String

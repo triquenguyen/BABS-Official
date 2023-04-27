@@ -22,7 +22,7 @@ export default function ATMDashboard({ balance, totalDeposit, totalWithdraw }) {
     const dispatch = useDispatch()
     const close = () => { dispatch(setShow(false)) }
     const closeWithdraw = () => { dispatch(setShowWithdraw(false)) }
-    if (!session) {
+    if (!session || !session.user?.pincode) {
         return <h1>you gotta log in {status}</h1>;
     }
 

@@ -17,7 +17,7 @@ const initialForm: FormProps = {
 
 export default function PINCodeForm({ callbackUrl = '/atm/dashboard' }) {
   const router = useRouter()
-  const { data } = useSession();
+  const { data, update } = useSession();
   const [form, setForm] = useState<FormProps>(initialForm)
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,26 +26,38 @@ export default function PINCodeForm({ callbackUrl = '/atm/dashboard' }) {
     setForm(prevState => ({ ...prevState, [name]: value }))
   }
 
+  if (data?.user.pincode)
+  {
+    router.push(callbackUrl)
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    try {
-      const res = await axios.post('/api/atm/pincode', form, {
-        headers: {
-          Authorization: `Bearer ${data.accessToken}`
-        }
-      })
-      if (!res.data.success) {
-        setErrorMessage(res.data.message);
-        console.log(errorMessage);
+    update({pincode: form.pincode}).then(session => {
+      console.log(session);
+      if (session?.user.pincode)
+      {
+        router.push(callbackUrl);
       }
-      else {
-        setErrorMessage('')
-        setForm(initialForm)
-        router.push(callbackUrl)
-      }
-    } catch (error) {
-      console.log("Error submitting form", error)
-    }
+    })
+    // try {
+    //   const res = await axios.post('/api/atm/pincode', form, {
+    //     headers: {
+    //       Authorization: `Bearer ${data.accessToken}`
+    //     }
+    //   })
+    //   if (!res.data.success) {
+    //     setErrorMessage(res.data.message);
+    //     console.log(errorMessage);
+    //   }
+    //   else {
+    //     setErrorMessage('')
+    //     setForm(initialForm)
+    //     router.push(callbackUrl)
+    //   }
+    // } catch (error) {
+    //   console.log("Error submitting form", error)
+    // }
   }
 
   return (
