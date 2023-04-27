@@ -47,7 +47,7 @@ export default function DepositCheck({ handleClose, id }) {
     if (id) {
       setForm({ ...form, id: id })
     }
-  }, [id])
+  }, [form, id])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
