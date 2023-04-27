@@ -2,7 +2,7 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/libs/store"
-import { setShowTransaction } from "../redux/showTransactionSlice"
+import { setShowTransaction } from "../../redux/showTransactionSlice"
 
 export default function DepositBtn() {
   const dispatch = useDispatch()

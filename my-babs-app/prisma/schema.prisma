@@ -11,20 +11,20 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   firstName     String
   lastName      String
-  email         String         @unique
+  email         String        @unique
   password      String
   pincode       String
-  balance       Int            @default(0)
-  totalDeposit  Int            @default(0)
-  totalWithdraw Int            @default(0)
-  totalTransfer Int            @default(0)
-  transactions  Transactions[]
+  balance       Int           @default(0)
+  totalDeposit  Int           @default(0)
+  totalWithdraw Int           @default(0)
+  totalTransfer Int           @default(0)
+  transactions  Transaction[]
 }
 
-model Transactions {
+model Transaction {
   id              Int      @id @default(autoincrement())
   createdAt       DateTime @default(now())
   amount          Int
@@ -35,4 +35,6 @@ model Transactions {
   senderEmail     String?
   User            User?    @relation(fields: [userId], references: [id])
   userId          Int?
+
+  @@map(name: "transactions")
 }

@@ -2,17 +2,17 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import { motion } from 'framer-motion'
-import Backdrop from './Backdrop'
+import Backdrop from '../Backdrop'
 import Image from 'next/image'
 import { useDispatch } from 'react-redux'
-import { setShowWithdraw } from '../redux/showWithdrawSlice'
+import { setShow } from '../../redux/showSlice'
 
-interface WithdrawProps {
+interface DepositProps {
   amount: number
   id: number
 }
 
-const initialWithdraw: WithdrawProps = {
+const initialDeposit: DepositProps = {
   amount: 0,
   id: 0
 }
@@ -36,7 +36,7 @@ const dropIn = {
 }
 
 export default function DepositCheck({ handleClose, id }) {
-  const [form, setForm] = useState<WithdrawProps>(initialWithdraw)
+  const [form, setForm] = useState<DepositProps>(initialDeposit)
   const dispatch = useDispatch()
 
   const refreshData = () => {
@@ -54,15 +54,15 @@ export default function DepositCheck({ handleClose, id }) {
     setForm(prevState => ({ ...prevState, [name]: value }))
   }
 
-  const handleWithdraw = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleDeposit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     try {
-      const res = await axios.post('/api/withdraw', form)
+      const res = await axios.post('/api/deposit', form)
       if (res.status === 200) {
         console.log("Form submitted", res)
-        setForm(initialWithdraw)
-        dispatch(setShowWithdraw(false))
+        setForm(initialDeposit)
+        dispatch(setShow(false))
         alert(res.data.message)
         refreshData()
       }
@@ -83,8 +83,8 @@ export default function DepositCheck({ handleClose, id }) {
       >
         <Image src='/close.png' width={25} height={25} alt='bg' onClick={handleClose} className='ml-auto hover:scale-110 active:scale-90' />
 
-        <h1 className='text-2xl text-white'>Withdraw Money</h1>
-        <form onSubmit={handleWithdraw} className="flex flex-col gap-6">
+        <h1 className='text-2xl text-[#69C9D0] '>Deposit Checks</h1>
+        <form onSubmit={handleDeposit} className="flex flex-col gap-6">
           <input
             type="number"
             value={form.amount}
@@ -100,7 +100,7 @@ export default function DepositCheck({ handleClose, id }) {
             whileTap={{ scale: 0.95 }}
             className="px-3 py-2 bg-[#69C9D0] rounded-md text-white"
           >
-            Withdraw
+            Deposit
           </motion.button>
         </form>
       </motion.div>

@@ -2,10 +2,10 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
 import { motion } from 'framer-motion'
-import Backdrop from './Backdrop'
+import Backdrop from '../Backdrop'
 import Image from 'next/image'
 import { useDispatch } from 'react-redux'
-import { setShowTransfer } from '../redux/showTransferSlice'
+import { setShowTransfer } from '../../redux/showTransferSlice'
 
 interface TransferProps {
   amount: number
@@ -85,7 +85,7 @@ export default function TransferFund({ handleClose, id }) {
       >
         <Image src='/close.png' width={25} height={25} alt='bg' onClick={handleClose} className='ml-auto hover:scale-110 active:scale-90' />
 
-        <h1 className='text-2xl text-white'>Transfer Funds</h1>
+        <h1 className='text-2xl text-[#69C9D0]'>Transfer Funds</h1>
         <form onSubmit={handleDeposit} className="flex flex-col gap-6">
           <input
             type="number"

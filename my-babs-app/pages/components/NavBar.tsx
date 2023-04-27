@@ -7,7 +7,7 @@ export default function Navbar({ username }) {
       <Link href="/" className="mr-auto items-center"><Image src="/babs-logo.svg" alt="logo" width={200} height={50} /></Link>
       <h1 className="mr-auto text-5xl font-bold" >Dashboard</h1>
       <Link href="/setting" className="flex gap-2 items-center">
-        <h1 className='text-black'>Welcome back! <div className="font-bold">{username}</div></h1>
+        <h1 className='text-black'>Welcome back <div className="font-bold">{username}</div></h1>
         <Image src="/account.png" alt="logo" height={100} width={100} className="w-10 h-10"/>
       </Link>
 
