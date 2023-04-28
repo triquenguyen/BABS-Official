@@ -6,7 +6,7 @@ import Link from "next/link"
 import Router from "next/router"
 
 interface FormProps {
-  email: string,
+  username: string,
   firstName: string,
   lastName: string,
   password: string,
@@ -15,7 +15,7 @@ interface FormProps {
 }
 
 const initialForm: FormProps = {
-  email: '',
+  username: '',
   firstName: '',
   lastName: '',
   password: '',
@@ -65,11 +65,11 @@ export default function SignUpForm() {
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[170px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-2 mt-2" />
         </div>
         <input
-          type="email"
-          name="email"
-          value={form.email}
+          type="username"
+          name="username"
+          value={form.username}
           onChange={handleChange}
-          placeholder="Email" className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[360px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-2 mt-2" />
+          placeholder="Username" className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[360px] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-2 mt-2" />
 
         <input
           type="password"

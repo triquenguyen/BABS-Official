@@ -9,20 +9,20 @@ export default NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "example@gmail.com" },
+        username: { label: "Username", type: "text", placeholder: "example" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const { email, password } = credentials as { email: string; password: string };
+        const { username, password } = credentials as { username: string; password: string };
 
-        if (!email || !password) {
-          throw new Error("Email and password are required");
+        if (!username || !password) {
+          throw new Error("Username and password are required");
         }
 
         try {
           const userExists = await prisma.user.findUnique({
             where: {
-              email: email,
+              username: username,
             },
           });
 
@@ -38,7 +38,7 @@ export default NextAuth({
 
           return {
             id: userExists.id,
-            email: userExists.email,
+            username: userExists.username,
             name: userExists.firstName + " " + userExists.lastName,
           }
 
@@ -59,7 +59,7 @@ export default NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email;
+        token.username = user.username;
         token.name = user.name;
       }
       return token;
@@ -68,7 +68,7 @@ export default NextAuth({
     async session({ session, token }) {
       session.user = { 
         id: token.id,
-        email: token.email,
+        username: token.username,
         name: token.name,
       };
       return session;

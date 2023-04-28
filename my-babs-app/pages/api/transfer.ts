@@ -3,7 +3,7 @@ import { prisma } from "@/libs/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { amount, id, receiverEmail } = await req.body as { amount: number, id: number, receiverEmail: string }
+    const { amount, id, receiverUsername } = await req.body as { amount: number, id: number, receiverUsername: string }
 
     if (amount <= 0) {
       res.status(400).json({ message: 'Amount is required' })
@@ -15,20 +15,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id: id },
         select: {
           balance: true,
-          email: true,
+          username: true,
         }
       })
 
       const receiver = await prisma.user.findUnique({
-        where: { email: String(receiverEmail) },
+        where: { username: String(receiverUsername) },
         select: {
-          email: true,
+          username: true,
           balance: true,
         }
       })
 
       if (!receiver) {
-        res.status(400).json({ message: `Receiver does not exist ${String(receiverEmail)}` })
+        res.status(400).json({ message: `Receiver does not exist ${String(receiverUsername)}` })
         return
       }
 
@@ -56,14 +56,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               createdAt: new Date(),
               accountBefore: Number(userCurrBalance),
               accountAfter: Number(Number(userCurrBalance) - Number(amount)),
-              receiverEmail: String(receiverEmail),
+              receiverUsername: String(receiverUsername),
             }
           }
         }
       })
 
       await prisma.user.update({
-        where: { email: String(receiverEmail) },
+        where: { username: String(receiverUsername) },
         data: {
           balance: {
             increment: Number(amount)
@@ -75,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               createdAt: new Date(),
               accountBefore: Number(receiverCurrBalance),
               accountAfter: Number(Number(receiverCurrBalance) + Number(amount)),
-              senderEmail: String(user?.email),
+              senderUsername: String(user?.username),
             },
           }
         }
@@ -85,7 +85,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return
     } catch (error) {
       console.log(error)
-      res.status(500).json({ message: `Something went wrong ${amount} and ${id} and ${receiverEmail}` })
+      res.status(500).json({ message: `Something went wrong ${amount} and ${id} and ${receiverUsername}` })
       return
     }
   } else {

@@ -5,8 +5,8 @@
 
 */
 -- AlterTable
-ALTER TABLE "Transactions" ADD COLUMN     "receiverEmail" TEXT,
-ADD COLUMN     "senderEmail" TEXT;
+ALTER TABLE "Transactions" ADD COLUMN     "receiverUsername" TEXT,
+ADD COLUMN     "senderUsername" TEXT;
 
 -- AlterTable
 ALTER TABLE "User" ALTER COLUMN "balance" SET DEFAULT 0,
