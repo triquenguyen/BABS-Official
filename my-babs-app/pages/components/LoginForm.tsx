@@ -7,12 +7,12 @@ import Link from 'next/link'
 import Router from 'next/router'
 
 interface FormProps {
-  email: string
+  username: string
   password: string
 }
 
 const initialForm: FormProps = {
-  email: '',
+  username: '',
   password: ''
 }
 
@@ -30,7 +30,7 @@ export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard
     const res = await signIn('credentials', {
       redirect: false,
       callbackUrl: callbackUrl,
-      email: form.email,
+      username: form.username,
       password: form.password
     })
 
@@ -51,11 +51,11 @@ export default function LogInForm({ withCreate = true, callbackUrl = '/dashboard
       <form onSubmit={handleSubmit} className="flex flex-col gap-[20px] items-center ">
 
         <input
-          type="email"
-          name="email"
-          value={form.email}
+          type="username"
+          name="username"
+          value={form.username}
           onChange={handleChange}
-          placeholder="Email"
+          placeholder="Username"
           className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[24em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2" />
 
         <input
