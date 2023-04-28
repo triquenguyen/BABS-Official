@@ -14,7 +14,7 @@ model User {
   id            Int           @id @default(autoincrement())
   firstName     String
   lastName      String
-  email         String        @unique
+  username      String        @unique
   password      String
   pincode       String
   balance       Int           @default(0)
@@ -25,16 +25,16 @@ model User {
 }
 
 model Transaction {
-  id              Int      @id @default(autoincrement())
-  createdAt       DateTime @default(now())
-  amount          Int
-  transactionType String
-  accountBefore   Int
-  accountAfter    Int
-  receiverEmail   String?
-  senderEmail     String?
-  User            User?    @relation(fields: [userId], references: [id])
-  userId          Int?
+  id                Int      @id @default(autoincrement())
+  createdAt         DateTime @default(now())
+  amount            Int
+  transactionType   String
+  accountBefore     Int
+  accountAfter      Int
+  receiverUsername  String?
+  senderUsername    String?
+  User              User?    @relation(fields: [userId], references: [id])
+  userId            Int?
 
   @@map(name: "transactions")
 }

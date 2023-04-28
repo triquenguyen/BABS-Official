@@ -18,8 +18,8 @@ CREATE TABLE "transactions" (
     "transactionType" TEXT NOT NULL,
     "accountBefore" INTEGER NOT NULL,
     "accountAfter" INTEGER NOT NULL,
-    "receiverEmail" TEXT,
-    "senderEmail" TEXT,
+    "receiverUsername" TEXT,
+    "senderUsername" TEXT,
     "userId" INTEGER,
 
     CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")

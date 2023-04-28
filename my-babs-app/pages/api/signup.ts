@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 interface UserReq {
   firstName: string;
   lastName: string;
-  email: string;
+  username: string;
   password: string;
   confirmPass: string;
   pincode: string;
@@ -14,20 +14,20 @@ interface UserReq {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   
   if (req.method === 'POST') {
-    const { email, firstName, lastName, password, confirmPass, pincode } = await req.body as UserReq;
+    const { username, firstName, lastName, password, confirmPass, pincode } = await req.body as UserReq;
 
-    if (!firstName || !lastName || !email || !password || !pincode || !confirmPass) {
+    if (!firstName || !lastName || !username || !password || !pincode || !confirmPass) {
       return res.status(400).json({ message: 'Please enter all fields!' })
     }
 
     if (password == confirmPass) {
       try {
         const userExists = await prisma.user.findUnique({
-          where: { email: email },
+          where: { username: username },
         });
 
         if (userExists) {
-          res.status(400).json({ message: 'This email has been used! Please log in with this email or sign up with another email' })
+          res.status(400).json({ message: 'This username has been used! Please log in with this username or sign up with another username' })
           return
         }
 
@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             data: {
               firstName: firstName,
               lastName: lastName,
-              email: email,
+              username: username,
               password: hashedPassword,
               pincode: pincode,
             }

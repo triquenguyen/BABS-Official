@@ -12,8 +12,8 @@ interface Transaction {
   amount: number
   balanceBefore: number
   balanceAfter: number
-  receiverEmail: string
-  senderEmail: string
+  receiverUsername: string
+  senderUsername: string
 }
 
 
@@ -81,8 +81,8 @@ export default function Transaction({ handleClose, transactions }) {
                 date={item.createdAt.slice(0, 10)}
                 balanceBefore={item.accountBefore}
                 balanceAfter={item.accountAfter}
-                receiver={item.receiverEmail}
-                sender={item.senderEmail}
+                receiver={item.receiverUsername}
+                sender={item.senderUsername}
               />
             </motion.div>
           ))}

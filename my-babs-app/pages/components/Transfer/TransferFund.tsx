@@ -10,13 +10,13 @@ import { setShowTransfer } from '../../redux/showTransferSlice'
 interface TransferProps {
   amount: number
   id: number
-  receiverEmail: string
+  receiverUsername: string
 }
 
 const initialTransfer: TransferProps = {
   amount: 0,
   id: 0,
-  receiverEmail: ''
+  receiverUsername: ''
 }
 
 const dropIn = {
@@ -96,11 +96,11 @@ export default function TransferFund({ handleClose, id }) {
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
           <input
-            type="email"
-            value={form.receiverEmail}
-            name='receiverEmail'
+            type="username"
+            value={form.receiverUsername}
+            name='receiverUsername'
             onChange={handleChange}
-            placeholder='Receiver Email'
+            placeholder='Receiver Username'
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
 
