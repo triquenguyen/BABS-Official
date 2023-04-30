@@ -16,6 +16,7 @@ import { RootState } from '@/libs/store';
 import { setShowTransfer } from './redux/showTransferSlice';
 import { setShowWithdraw } from './redux/showWithdrawSlice';
 import { setShowTransaction } from './redux/showTransactionSlice';
+import { setShowAccount } from './redux/showAccountSlice';
 
 import Balance from './components/Statistic/Balance';
 import TotalTransfer from './components/Statistic/TotalTransfer';
@@ -30,20 +31,25 @@ import Withdraw from './components/Withdraw/Withdraw';
 import TransactionCard from './components/Transaction/TransactionCard';
 import Transaction from './components/Transaction/Transaction';
 import TransactionBtn from './components/Transaction/TransactionBtn';
+import CreateAccount from './components/Account/CreateAccount';
+import CreateAccountBtn from './components/Account/CreateAccountBtn';
+import AccountManagement from './components/Account/AccountManagement';
 
-export default function dashboard({ transactions, balance, totalDeposit, totalWithdraw }) {
+export default function dashboard({ transactions, accounts, totalDeposit, totalWithdraw }) {
   const { status, data: session } = useSession();
 
   const show = useSelector((state: RootState) => state.show.show)
   const showTransfer = useSelector((state: RootState) => state.showTransfer.showTransfer)
   const showWithdraw = useSelector((state: RootState) => state.showWithdraw.showWithdraw)
   const showTransaction = useSelector((state: RootState) => state.showTransaction.showTransaction)
+  const showAccount = useSelector((state: RootState) => state.showAccount.showAccount)
 
   const dispatch = useDispatch()
   const close = () => { dispatch(setShow(false)) }
   const closeTransfer = () => { dispatch(setShowTransfer(false)) }
   const closeWithdraw = () => { dispatch(setShowWithdraw(false)) }
   const closeTransaction = () => { dispatch(setShowTransaction(false)) }
+  const closeAccount = () => { dispatch(setShowAccount(false)) }
 
 
   const handleSignout = () => {
@@ -61,11 +67,11 @@ export default function dashboard({ transactions, balance, totalDeposit, totalWi
         <Navbar username={session.user?.name} />
 
         <div className="mt-4 flex gap-8">
-          <Balance amount={balance} />
           <DepositBtn />
           <TransferBtn />
           <WithdrawBtn />
           <TransactionBtn />
+          <CreateAccountBtn />
         </div>
 
         <button className="px-3 py-2 bg-[#69C9D0] bg-opacity-70 rounded-md text-white" onClick={handleSignout}>Sign Out</button>
@@ -75,6 +81,7 @@ export default function dashboard({ transactions, balance, totalDeposit, totalWi
       {showTransfer && <TransferFund showTransfer={showTransfer} handleClose={closeTransfer} id={session.user?.id} />}
       {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} />}
       {showTransaction && <Transaction showTransaction={showTransaction} handleClose={closeTransaction} transactions={transactions} />}
+      {showAccount && <AccountManagement showAccount={showAccount} handleClose={closeAccount} id={session.user?.id} />}
     </div>
   )
 }
@@ -89,10 +96,10 @@ export async function getServerSideProps(context) {
       where: {
         id: session?.user?.id
       }, select: {
-        balance: true,
         totalDeposit: true,
         totalWithdraw: true,
         transactions: true,
+        accounts: true,
       }
     })
 
@@ -104,7 +111,6 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-        balance: user?.balance,
         totalDeposit: user?.totalDeposit,
         totalWithdrawals: user?.totalWithdraw,
         transactions
@@ -116,7 +122,8 @@ export async function getServerSideProps(context) {
         balance: 0,
         totalDeposits: 0,
         totalWithdrawals: 0,
-        transactions: []
+        transactions: [],
+        accounts: [],
       }
     }
   }

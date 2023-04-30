@@ -3,6 +3,7 @@ import showReducer from '../pages/redux/showSlice'
 import showTransferReducer from '../pages/redux/showTransferSlice'
 import showWithdrawReducer from '@/pages/redux/showWithdrawSlice'
 import showTransactionReducer from '@/pages/redux/showTransactionSlice'
+import showAccountReducer from '@/pages/redux/showAccountSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     showTransfer: showTransferReducer,
     showWithdraw: showWithdrawReducer,
     showTransaction: showTransactionReducer,
+    showAccount: showAccountReducer,
   },
 })
 

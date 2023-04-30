@@ -11,12 +11,18 @@ interface TransferProps {
   amount: number
   id: number
   receiverEmail: string
+  receiverAccountId: number
+  password: string
+  accountId: number
 }
 
 const initialTransfer: TransferProps = {
   amount: 0,
   id: 0,
-  receiverEmail: ''
+  receiverEmail: '',
+  receiverAccountId: 0,
+  password: '',
+  accountId: 0
 }
 
 const dropIn = {
@@ -86,15 +92,23 @@ export default function TransferFund({ handleClose, id }) {
         <Image src='/close.png' width={25} height={25} alt='bg' onClick={handleClose} className='ml-auto hover:scale-110 active:scale-90' />
 
         <h1 className='text-2xl text-[#69C9D0]'>Transfer Funds</h1>
-        <form onSubmit={handleDeposit} className="flex flex-col gap-6">
+        <form onSubmit={handleDeposit} className="flex flex-col gap-4">
           <input
             type="number"
-            value={form.amount}
             name='amount'
             onChange={handleChange}
             placeholder='Amount to Transfer'
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
+
+          <input
+            type="number"
+            name='accountId'
+            onChange={handleChange}
+            placeholder='Transfer From Account ID'
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+
           <input
             type="email"
             value={form.receiverEmail}
@@ -104,11 +118,28 @@ export default function TransferFund({ handleClose, id }) {
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
 
+          <input
+            type="number"
+            name='receiverAccountId'
+            onChange={handleChange}
+            placeholder='Receiver Account ID'
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+
+          <input
+            type="password"
+            value={form.password}
+            name='password'
+            onChange={handleChange}
+            placeholder='Password'
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+
           <motion.button
             type="submit"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-3 py-2 bg-[#69C9D0] rounded-md text-white"
+            className="px-3 py-2 bg-[#69C9D0] mt-2 rounded-md text-white"
           >
             Transfer
           </motion.button>

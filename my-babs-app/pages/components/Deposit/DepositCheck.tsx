@@ -10,11 +10,15 @@ import { setShow } from '../../redux/showSlice'
 interface DepositProps {
   amount: number
   id: number
+  accountId: number
+  password: string
 }
 
 const initialDeposit: DepositProps = {
   amount: 0,
-  id: 0
+  id: 0,
+  accountId: 0,
+  password: ''
 }
 
 const dropIn = {
@@ -87,10 +91,26 @@ export default function DepositCheck({ handleClose, id }) {
         <form onSubmit={handleDeposit} className="flex flex-col gap-6">
           <input
             type="number"
-            value={form.amount}
             name='amount'
             onChange={handleChange}
             placeholder='Amount to Deposit'
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+
+          <input
+            type="number"
+            name='accountId'
+            onChange={handleChange}
+            placeholder='Account ID'
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+
+          <input
+            type="password"
+            value={form.password}
+            name='password'
+            onChange={handleChange}
+            placeholder='Password'
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
 
