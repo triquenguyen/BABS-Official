@@ -56,11 +56,12 @@ export default function Transaction({ handleClose, transactions }) {
         <Image src='/close.png' width={25} height={25} alt='bg' onClick={handleClose} className='ml-auto hover:scale-110 active:scale-90' />
         <h1 className='text-2xl text-[#69C9D0] mb-2'>Transaction History</h1>
         <div className='flex gap-8 text-[#69C9D0]'>
-          <h1 className='mr-4'>Type</h1>
-          <h1 className='mr-4'>Amount</h1>
-          <h1 className='mr-6'>Date</h1>
-          <h1 className='mr-6'>Before</h1>
-          <h1 className='mr-4'>After</h1>
+          <h1 className='mr-2'>Type</h1>
+          <h1>ID</h1>
+          <h1 className='mr-2'>Amount</h1>
+          <h1 className='mr-2'>Date</h1>
+          <h1 className='mr-2'>Before</h1>
+          <h1 className='mr-2'>After</h1>
         </div>
         <div className='overflow-y-auto'>
           {transactions?.map((item, index) => (
@@ -76,6 +77,7 @@ export default function Transaction({ handleClose, transactions }) {
               className='min-w-[100%] mb-4'
             >
               <TransactionCard
+                id={item.accountId}
                 type={item.transactionType}
                 amount={item.amount}
                 date={item.createdAt.slice(0, 10)}

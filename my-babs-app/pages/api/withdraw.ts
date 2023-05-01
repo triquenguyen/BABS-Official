@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/libs/prisma";
-
+import bcrypt from 'bcrypt'
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { amount, id } = await req.body as { amount: number, id: number }
+    const { amount, id, accountId, password } = await req.body as { amount: number, id: number, accountId: number, password: string }
 
     if (amount <= 0) {
       res.status(400).json({ message: 'Amount is not valid! Please enter a valid amount' })
@@ -17,33 +17,66 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const user = await prisma.user.findUnique({
         where: { id: id },
         select: {
-          balance: true,
-        },
+          password: true,
+          accounts: {
+            where: { id: Number(accountId) },
+          }
+        }
       })
 
-      if (user?.balance < amount) {
+      const passwordMatch = await bcrypt.compare(password, user?.password)
+
+      if (!passwordMatch) {
+        res.status(400).json({ message: `Password is not valid! Please enter a valid password` })
+        return
+      }
+
+      if (!user?.accounts[0]) {
+        res.status(400).json({ message: `Account is not valid! Please enter a valid account` })
+        return
+      }
+
+      const currBalance = await prisma.user.findUnique({
+        where: { id: id },
+        select: {
+          accounts: {
+            where: { id: Number(accountId) },
+            select: {
+              balance: true
+            }
+          }
+        }
+      })
+
+      if (currBalance?.accounts[0].balance < amount) {
         res.status(400).json({ message: `Your current balance is ${user?.balance}. Please withdraw a valid amount` })
         return
       }
 
-      const currBalance = user?.balance
-
       await prisma.user.update({
-        where: { id: id },
+        where: { id: Number(id) },
         data: {
-          balance: {
-            decrement: Number(amount)
+          accounts: {
+            update: {
+              where: { id: Number(accountId) },
+              data: {
+                balance: {
+                  decrement: Number(amount)
+                }
+              }
+            }
           },
-          totalWithdraw: {
+          totalDeposit: {
             increment: Number(amount)
           },
           transactions: {
             create: {
               amount: Number(amount),
+              accountId: Number(accountId),
               transactionType: 'Withdraw',
               createdAt: new Date(),
-              accountBefore: Number(currBalance),
-              accountAfter: Number(Number(currBalance) - Number(amount))
+              accountBefore: Number(currBalance?.accounts[0].balance),
+              accountAfter: Number(Number(currBalance?.accounts[0].balance) - Number(amount))
             }
           }
         },
