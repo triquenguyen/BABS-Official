@@ -15,7 +15,7 @@ import WithdrawBtn from '../components/Withdraw/WithdrawBtn';
 import { setShow } from '../redux/showSlice';
 import { setShowWithdraw } from '../redux/showWithdrawSlice';
 
-export default function ATMDashboard({ balance, totalDeposit, totalWithdraw }) {
+export default function ATMDashboard({ transactions, accounts, totalDeposit, totalWithdraw }) {
     const { status, data: session } = useSession();
     const show = useSelector((state: RootState) => state.show.show)
     const showWithdraw = useSelector((state: RootState) => state.showWithdraw.showWithdraw)
@@ -25,6 +25,7 @@ export default function ATMDashboard({ balance, totalDeposit, totalWithdraw }) {
     if (!session || !session.user?.pincode) {
         return <h1>you gotta log in {status}</h1>;
     }
+    console.log(accounts)
 
     return (
         <div>
@@ -32,7 +33,7 @@ export default function ATMDashboard({ balance, totalDeposit, totalWithdraw }) {
             <div className="px-8 py-4">
                 <Navbar username={session.user?.name} callbackUrl='/atm/login' />
                 <div className="flex gap-6">
-                    <Balance amount={balance} />
+                    {/* <Balance amount={balance} /> */}
                     <DepositBtn />
                     <WithdrawBtn />
                 </div>
@@ -47,32 +48,47 @@ ATMDashboard.auth = true
 
 export async function getServerSideProps(context) {
     const session = await getSession(context);
-
+  
     if (session) {
-        const user = await prisma.user.findUnique({
-            where: {
-                id: session?.user?.id
-            }, select: {
-                balance: true,
-                totalDeposit: true,
-                totalWithdraw: true
-            }
-        })
+      const user = await prisma.user.findUnique({
+        where: {
+          id: session?.user?.id
+        }, select: {
+          totalDeposit: true,
+          totalWithdraw: true,
+          transactions: true,
+          accounts: true,
+        }
+      })
+  
+      const transactions = user?.transactions.map(transaction => ({
+        ...transaction,
+        createdAt: transaction.createdAt.toISOString(),
+      }));
 
-        return {
-            props: {
-                balance: user?.balance,
-                totalDeposit: user?.totalDeposit,
-                totalWithdrawals: user?.totalWithdraw
-            }
+      const accounts = user?.accounts.map(account => ({
+        ...account, createdAt: account.createdAt.toISOString()
+      }))
+  
+  
+      return {
+        props: {
+          totalDeposit: user?.totalDeposit,
+          totalWithdrawals: user?.totalWithdraw,
+          transactions,
+          accounts
         }
+      }
     } else {
-        return {
-            props: {
-                balance: 0,
-                totalDeposits: 0,
-                totalWithdrawals: 0
-            }
+      return {
+        props: {
+          balance: 0,
+          totalDeposits: 0,
+          totalWithdrawals: 0,
+          transactions: [],
+          accounts: [],
         }
+      }
     }
-}
+  }
+  
