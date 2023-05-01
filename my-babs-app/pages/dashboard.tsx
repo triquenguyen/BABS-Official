@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/display-name */
 
-import { useSession, signOut, getSession } from 'next-auth/react';
+import { useSession, signOut, getSession, GetSessionParams } from 'next-auth/react';
 import Navbar from './components/NavBar';
 import Image from 'next/image';
 import { GetServerSideProps } from 'next';
@@ -17,8 +17,10 @@ import { setShowTransfer } from './redux/showTransferSlice';
 import { setShowWithdraw } from './redux/showWithdrawSlice';
 import { setShowTransaction } from './redux/showTransactionSlice';
 import { setShowAccount } from './redux/showAccountSlice';
+import { setShowBalance } from './redux/showBalanceSlice';
+import { setShowProfile } from './redux/showProfileSlice';
 
-import Balance from './components/Statistic/Balance';
+import Balance from './components/Balance/Balance';
 import TotalTransfer from './components/Statistic/TotalTransfer';
 import TotalWithdraw from './components/Statistic/TotalWithdraw';
 import TotalDeposit from './components/Statistic/TotalDeposit';
@@ -34,15 +36,20 @@ import TransactionBtn from './components/Transaction/TransactionBtn';
 import CreateAccount from './components/Account/CreateAccount';
 import CreateAccountBtn from './components/Account/CreateAccountBtn';
 import AccountManagement from './components/Account/AccountManagement';
+import BalanceList from './components/Balance/BalanceList';
+import Profile from './components/Profile/Profile';
 
-export default function dashboard({ transactions, accounts, totalDeposit, totalWithdraw }) {
+export default function dashboard({ transactions, accounts, totalDeposit, totalWithdraw, firstName, lastName, email }) {
   const { status, data: session } = useSession();
+  const [account, setAccount] = useState(accounts[1])
 
   const show = useSelector((state: RootState) => state.show.show)
   const showTransfer = useSelector((state: RootState) => state.showTransfer.showTransfer)
   const showWithdraw = useSelector((state: RootState) => state.showWithdraw.showWithdraw)
   const showTransaction = useSelector((state: RootState) => state.showTransaction.showTransaction)
   const showAccount = useSelector((state: RootState) => state.showAccount.showAccount)
+  const showBalance = useSelector((state: RootState) => state.showBalance.showBalance)
+  const showProfile = useSelector((state: RootState) => state.showProfile.showProfile)
 
   const dispatch = useDispatch()
   const close = () => { dispatch(setShow(false)) }
@@ -50,11 +57,10 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
   const closeWithdraw = () => { dispatch(setShowWithdraw(false)) }
   const closeTransaction = () => { dispatch(setShowTransaction(false)) }
   const closeAccount = () => { dispatch(setShowAccount(false)) }
+  const closeBalance = () => { dispatch(setShowBalance(false)) }
+  const closeProfile = () => { dispatch(setShowProfile(false)) }
 
 
-  const handleSignout = () => {
-    signOut({ redirect: true, callbackUrl: '/login' })
-  }
 
   if (!session) {
     return <h1>you gotta log in {status}</h1>;
@@ -66,7 +72,8 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
       <div className="px-16 py-6">
         <Navbar username={session.user?.name} />
 
-        <div className="mt-4 flex gap-8">
+        <div className="mt-4 flex flex-wrap gap-8">
+          <Balance accounts={accounts} />
           <DepositBtn />
           <TransferBtn />
           <WithdrawBtn />
@@ -74,7 +81,7 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
           <CreateAccountBtn />
         </div>
 
-        <button className="px-3 py-2 bg-[#69C9D0] bg-opacity-70 rounded-md text-white" onClick={handleSignout}>Sign Out</button>
+        
       </div>
 
       {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} />}
@@ -82,13 +89,15 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
       {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} />}
       {showTransaction && <Transaction showTransaction={showTransaction} handleClose={closeTransaction} transactions={transactions} />}
       {showAccount && <AccountManagement showAccount={showAccount} handleClose={closeAccount} id={session.user?.id} />}
+      {showBalance && <BalanceList showBalance={showBalance} handleClose={closeBalance} accounts={accounts}/>}
+      {showProfile && <Profile showProfile={showProfile} handleClose={closeProfile} id={session.user?.id} firstName={firstName} lastName={lastName} email={email} />}
     </div>
   )
 }
 
 dashboard.auth = true
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetSessionParams | undefined) {
   const session = await getSession(context);
 
   if (session) {
@@ -100,6 +109,10 @@ export async function getServerSideProps(context) {
         totalWithdraw: true,
         transactions: true,
         accounts: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        password: true,
       }
     })
 
@@ -108,12 +121,21 @@ export async function getServerSideProps(context) {
       createdAt: transaction.createdAt.toISOString(),
     }));
 
+    const accounts = user?.accounts.map(account => ({
+      ...account,
+      createdAt: account.createdAt.toISOString(),
+    }));
+
 
     return {
       props: {
         totalDeposit: user?.totalDeposit,
         totalWithdrawals: user?.totalWithdraw,
-        transactions
+        transactions,
+        accounts,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        email: user?.email,
       }
     }
   } else {
@@ -124,6 +146,9 @@ export async function getServerSideProps(context) {
         totalWithdrawals: 0,
         transactions: [],
         accounts: [],
+        firstName: '',
+        lastName: '',
+        email: '',
       }
     }
   }

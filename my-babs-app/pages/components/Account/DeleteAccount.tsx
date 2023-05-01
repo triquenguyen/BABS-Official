@@ -42,7 +42,7 @@ export default function CreateAccount({ id }) {
     e.preventDefault()
 
     try {
-      const res = await axios.put('/api/account', form)
+      const res = await axios.post('/api/deleteaccount', form)
       if (res.status === 200) {
         console.log("Form submitted", res)
         setForm(initialDeleteAccount)
