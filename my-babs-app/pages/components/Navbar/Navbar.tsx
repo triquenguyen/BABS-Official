@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import ProfileBtn from "./Profile/ProfileBtn"
+import ProfileBtn from "../Profile/ProfileBtn"
 
 export default function Navbar({ username }) {
   return (

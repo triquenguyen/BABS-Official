@@ -4,7 +4,7 @@ import loadConfig from "next/dist/server/config";
 import { useEffect } from 'react';
 import Image from 'next/image';
 import DepositCheck from '../components/Deposit/DepositCheck';
-import Navbar from '../components/NavBar';
+import Navbar from '../components/Navbar/Navbar';
 
 export default function ATMDashboard() {
     const { status, data: session } = useSession();

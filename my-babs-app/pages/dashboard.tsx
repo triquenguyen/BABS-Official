@@ -3,7 +3,7 @@
 /* eslint-disable react/display-name */
 
 import { useSession, signOut, getSession, GetSessionParams } from 'next-auth/react';
-import Navbar from './components/NavBar';
+import Navbar from './components/Navbar/Navbar';
 import Image from 'next/image';
 import { GetServerSideProps } from 'next';
 import { prisma } from '../libs/prisma';
@@ -39,6 +39,7 @@ import AccountManagement from './components/Account/AccountManagement';
 import BalanceList from './components/Balance/BalanceList';
 import Profile from './components/Profile/Profile';
 
+
 export default function dashboard({ transactions, accounts, totalDeposit, totalWithdraw, firstName, lastName, email }) {
   const { status, data: session } = useSession();
   const [account, setAccount] = useState(accounts[1])
@@ -70,7 +71,7 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
     <div>
       <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block min-h-screen z-[-1]" alt='bg' />
       <div className="px-16 py-6">
-        <Navbar username={session.user?.name} />
+        <Navbar username={`${firstName} ${lastName}`} />
 
         <div className="mt-4 flex flex-wrap gap-8">
           <Balance accounts={accounts} />
@@ -81,7 +82,7 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
           <CreateAccountBtn />
         </div>
 
-        
+
       </div>
 
       {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} />}
@@ -89,7 +90,7 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
       {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} />}
       {showTransaction && <Transaction showTransaction={showTransaction} handleClose={closeTransaction} transactions={transactions} />}
       {showAccount && <AccountManagement showAccount={showAccount} handleClose={closeAccount} id={session.user?.id} />}
-      {showBalance && <BalanceList showBalance={showBalance} handleClose={closeBalance} accounts={accounts}/>}
+      {showBalance && <BalanceList showBalance={showBalance} handleClose={closeBalance} accounts={accounts} />}
       {showProfile && <Profile showProfile={showProfile} handleClose={closeProfile} id={session.user?.id} firstName={firstName} lastName={lastName} email={email} />}
     </div>
   )
