@@ -1,10 +1,9 @@
 import { useSession, signOut, getSession, GetSessionParams } from 'next-auth/react';
 import Router from 'next/router';
 import loadConfig from "next/dist/server/config";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import DepositCheck from '../components/Deposit/DepositCheck';
-import Navbar from '../components/Navbar/Navbar';
 import { prisma } from '../../libs/prisma';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, dispatch } from '@/libs/store';
@@ -16,6 +15,7 @@ import { setShowWithdraw } from '../redux/showWithdrawSlice';
 import { IAccount, setAccountInfo, setInit } from '../redux/accountInfo';
 import Balance from '../components/Balance/BalanceCard';
 import { Account } from '@prisma/client';
+import NavbarATM, { NavItem } from '../components/Navbar/NavbarATM';
 
 
 export default function ATMDashboard({ transactions, accounts, totalDeposit, totalWithdraw }) {
@@ -25,6 +25,11 @@ export default function ATMDashboard({ transactions, accounts, totalDeposit, tot
   const dispatch = useDispatch()
   const close = () => { dispatch(setShow(false)) }
   const closeWithdraw = () => { dispatch(setShowWithdraw(false)) }
+  const [navItems, setNavItems] = useState<NavItem[]>([
+    { name: 'Accounts', active: true },
+    { name: 'Deposit', active: false },
+    { name: 'Withdraw', active: false },
+  ]);
   if (!session) {
     Router.replace("/atm/login")
     return;
@@ -35,20 +40,26 @@ export default function ATMDashboard({ transactions, accounts, totalDeposit, tot
   }
 
   return (
-    <div>
-      <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block w-[100%] z-[-1]" alt='bg' />
-      <div className="px-8 py-4">
-        <Navbar username={session.user?.name} callbackUrl='/atm/login' />
-        {accounts.map((account: Account) => (<Balance key={account.id} accountId={account.id} balance={account.balance} type={account.type} />))}
-        <div className="flex gap-6">
-          <DepositBtn />
-          <WithdrawBtn />
-        </div>
+    <div className='md:container'>
+      <NavbarATM username={session.user?.name} callbackUrl='/atm/login' navItems={navItems} setNavItems={setNavItems} />
+      {/* <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block w-[100%] z-[-1]" alt='bg' /> */}
+      <div className="flex flex-col w-1/2 mx-auto h-full space-y-2">
+        {checkNavActive("Accounts", navItems) && accounts.map((account: Account) => (<Balance key={account.id} accountId={account.id} balance={account.balance} type={account.type} />))}
+        {checkNavActive("Deposit", navItems) && <DepositBtn />}
+        {checkNavActive("Withdraw", navItems) && <WithdrawBtn />}
         {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} accounts={accounts} />}
         {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} accounts={accounts} />}
       </div>
     </div>
   )
+}
+
+const checkNavActive = (name: string, navs: NavItem[]) => {
+  for (const nav of navs) {
+    if (nav.name === name) {
+      return nav.active
+    }
+  }
 }
 
 ATMDashboard.auth = true
