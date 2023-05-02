@@ -25,9 +25,8 @@ export default function Balance(account: accountProps) {
   const dispatch = useDispatch()
 
   return (
-    <div 
-
-    className="rounded-md bg-[#69C9D0] p-8 bg-opacity-70 gap-2 flex flex-col">
+    <div
+      className="rounded-md bg-[#69C9D0] p-8 bg-opacity-70 gap-2 flex flex-col">
       <h1 className="text-xl">{account.type} ({account.accountId})</h1>
       <div className="flex">
         <h2 className="mr-auto">$</h2>

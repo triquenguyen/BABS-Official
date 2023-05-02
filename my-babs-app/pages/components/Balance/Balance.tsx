@@ -24,7 +24,6 @@ export default function Balance({ accounts }) {
   const dispatch = useDispatch()
   const show = useSelector((state: RootState) => state.showBalance.showBalance)
   const id = useSelector((state: RootState) => state.accountId.accountId)
-
   if (!accounts || accounts.length <= id) {
     return null;
   }
