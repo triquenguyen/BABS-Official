@@ -1,8 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import PINCodeForm from "../components/PINCodeForm";
+import { useSession } from "next-auth/react";
+import Router from "next/router";
 
 export default function PINCode() {
+  const { status, data: session } = useSession();
+  if (!session)
+  {
+    Router.replace("/atm/login")
+    return;
+  }
   return (
     <div className="flex justify-center items-center h-screen">
       <Image src="/login-bg.svg" alt="Logo" width={1000} height={1000} className="hidden fixed xl:block w-[100%] z-[-1]" />

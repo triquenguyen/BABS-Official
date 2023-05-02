@@ -18,20 +18,19 @@ interface accountProps {
 }
 
 export default function Balance(account: accountProps) {
-  if (!account || !account.balance) {
+  if (!account) {
     return null;
   }
 
   const dispatch = useDispatch()
 
   return (
-    <div 
-
-    className="rounded-md bg-[#69C9D0] p-8 bg-opacity-70 gap-2 flex flex-col">
+    <div
+      className="rounded-md bg-[#69C9D0] p-8 bg-opacity-70 gap-2 flex flex-col">
       <h1 className="text-xl">{account.type} ({account.accountId})</h1>
       <div className="flex">
-        <h2 className="mr-auto">$</h2>
-        <p className={`text-5xl ${plexMono.className}`}>{account.balance.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</p>
+        <h2 className="mr-auto"></h2>
+        <p className={`text-5xl ${plexMono.className}`}>$ {new Intl.NumberFormat("en-us", {style: 'decimal'}).format(account.balance)}</p>
       </div>
       <h1 className="ml-auto">Available Balance</h1>
     </div>

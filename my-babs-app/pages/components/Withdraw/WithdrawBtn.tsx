@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setShowWithdraw } from "../../redux/showWithdrawSlice"
 import { RootState } from "@/libs/store"
 
-export default function DepositBtn() {
+export default function WithdrawBtn() {
   const dispatch = useDispatch()
   const show = useSelector((state: RootState) => state.showWithdraw.showWithdraw)
 

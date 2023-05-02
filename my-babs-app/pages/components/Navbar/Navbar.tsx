@@ -2,7 +2,10 @@ import Link from "next/link"
 import Image from "next/image"
 import ProfileBtn from "../Profile/ProfileBtn"
 
-export default function Navbar({ username }) {
+export default function Navbar({ username, callbackUrl = "/login" }) {
+  const handleSignout = () => {
+    signOut({ redirect: true, callbackUrl: callbackUrl })
+  }
   return (
     <div className="flex items-center justify-items-center h-16">
       <Link href="/" className="mr-auto items-center"><Image src="/babs-logo.svg" alt="logo" width={200} height={50} /></Link>

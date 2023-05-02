@@ -15,9 +15,9 @@ const initialForm: FormProps = {
   pincode: ''
 }
 
-export default function PINCodeForm({ callbackUrl = '/dashboard' }) {
+export default function PINCodeForm({ callbackUrl = '/atm/dashboard' }) {
   const router = useRouter()
-  const { data } = useSession();
+  const { data, update } = useSession();
   const [form, setForm] = useState<FormProps>(initialForm)
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,25 +26,38 @@ export default function PINCodeForm({ callbackUrl = '/dashboard' }) {
     setForm(prevState => ({ ...prevState, [name]: value }))
   }
 
+  if (data?.user.pincode)
+  {
+    router.push(callbackUrl)
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    try {
-      const res = await axios.post('/api/atm/pincode', form, {
-        headers: {
-          Authorization: `Bearer ${data.accessToken}`
-        }
-      })
-      if (!res.data.success) {
-        setErrorMessage(res.data.message);
-        console.log(errorMessage);
+    update({pincode: form.pincode}).then(session => {
+      console.log(session);
+      if (session?.user.pincode)
+      {
+        router.push(callbackUrl);
       }
-      else {
-        setErrorMessage('')
-        setForm(initialForm)
-      }
-    } catch (error) {
-      console.log("Error submitting form", error)
-    }
+    })
+    // try {
+    //   const res = await axios.post('/api/atm/pincode', form, {
+    //     headers: {
+    //       Authorization: `Bearer ${data.accessToken}`
+    //     }
+    //   })
+    //   if (!res.data.success) {
+    //     setErrorMessage(res.data.message);
+    //     console.log(errorMessage);
+    //   }
+    //   else {
+    //     setErrorMessage('')
+    //     setForm(initialForm)
+    //     router.push(callbackUrl)
+    //   }
+    // } catch (error) {
+    //   console.log("Error submitting form", error)
+    // }
   }
 
   return (
@@ -52,7 +65,7 @@ export default function PINCodeForm({ callbackUrl = '/dashboard' }) {
       <h1 className="text-[42px] font-bold text-[#69C9D0] mt-[8px]">PIN Code</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-[28px] items-center ">
         <label className="text-[#69C9D0] flex flex-col">
-          Password
+          PIN
           <input type="password" name="pincode" value={form.pincode} onChange={handleChange} className="bg-[rgba(255,255,255,0.2)] w-[24em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2" />
         </label>
         {errorMessage && <p className="text-[#FF0000] flex flex-col">{errorMessage}</p>}
