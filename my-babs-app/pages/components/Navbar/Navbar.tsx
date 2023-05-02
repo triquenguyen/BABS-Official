@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { signOut } from "next-auth/react"
+import ProfileBtn from "../Profile/ProfileBtn"
 
 export default function Navbar({ username, callbackUrl = "/login" }) {
   const handleSignout = () => {
@@ -9,12 +9,12 @@ export default function Navbar({ username, callbackUrl = "/login" }) {
   return (
     <div className="flex items-center justify-items-center h-16">
       <Link href="/" className="mr-auto items-center"><Image src="/babs-logo.svg" alt="logo" width={200} height={50} /></Link>
-      <h1 className="mr-auto text-5xl font-bold" >Dashboard</h1>
-      <Link href="/setting" className="flex gap-2 items-center">
-        <h1 className='text-black'>Welcome back <div className="font-bold">{username}</div></h1>
-        <Image src="/account.png" alt="logo" height={100} width={100} className="w-10 h-10"/>
-      </Link>
-      <button className="px-3 py-2 bg-[#69C9D0] bg-opacity-70 rounded-md text-white" onClick={handleSignout}>Sign Out</button>
+      <h1 className="mr-auto text-5xl font-bold text-[#080325]" >Dashboard</h1>
+      <div className="flex gap-2 items-center">
+        <h1 className='text-[#080325]'>Welcome back <div className="font-bold text-[#080325]">{username}</div></h1>
+        <ProfileBtn />
+      </div>
+
     </div>
   )
 }
