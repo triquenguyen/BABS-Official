@@ -13,7 +13,7 @@ export default function DepositBtn() {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={() => show ? dispatch(setShow(false)) : dispatch(setShow(true))}
-      className="flex p-8 bg-[#69C9D0] bg-opacity-70 rounded-md flex-col items-center justify-center gap-4">
+      className="flex p-8 bg-[#69C9D0] w-[14em] h-[14em] bg-opacity-70 rounded-md flex-col items-center justify-center gap-4">
       <Image src="/deposit_check_icon.svg" width={140} height={100} alt='bg' />
       <button className="">Deposit Checks</button>
     </motion.div>

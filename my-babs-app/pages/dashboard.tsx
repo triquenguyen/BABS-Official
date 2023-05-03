@@ -38,6 +38,7 @@ import CreateAccountBtn from './components/Account/CreateAccountBtn';
 import AccountManagement from './components/Account/AccountManagement';
 import BalanceList from './components/Balance/BalanceList';
 import Profile from './components/Profile/Profile';
+import Footer from './components/Footer';
 
 
 export default function dashboard({ transactions, accounts, totalDeposit, totalWithdraw, firstName, lastName, email }) {
@@ -70,10 +71,11 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
   return (
     <div>
       <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block min-h-screen z-[-1]" alt='bg' />
-      <div className="px-16 py-6">
+      <div className="px-16 py-8"
+        style={{ height: "90vh", overflowY: "hidden" }}>
         <Navbar username={`${firstName} ${lastName}`} />
 
-        <div className="mt-4 flex flex-wrap gap-8">
+        <div className="mt-6 flex flex-wrap gap-14 justify-center items-center">
           <Balance accounts={accounts} />
           <DepositBtn />
           <TransferBtn />
@@ -85,9 +87,11 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
 
       </div>
 
-      {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} />}
+      <Footer />
+
+      {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} accounts={accounts} />}
       {showTransfer && <TransferFund showTransfer={showTransfer} handleClose={closeTransfer} id={session.user?.id} />}
-      {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} />}
+      {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} accounts={accounts} />}
       {showTransaction && <Transaction showTransaction={showTransaction} handleClose={closeTransaction} transactions={transactions} />}
       {showAccount && <AccountManagement showAccount={showAccount} handleClose={closeAccount} id={session.user?.id} />}
       {showBalance && <BalanceList showBalance={showBalance} handleClose={closeBalance} accounts={accounts} />}

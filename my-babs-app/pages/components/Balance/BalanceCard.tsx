@@ -26,8 +26,8 @@ export default function Balance(account: accountProps) {
 
   return (
     <div
-      className="rounded-md bg-[#69C9D0] p-8 bg-opacity-70 gap-2 flex flex-col">
-      <h1 className="text-xl">{account.type} ({account.accountId})</h1>
+      className="rounded-md bg-[#69C9D0] h-[14em] min-w-[26em] w-fit p-8 bg-opacity-70 gap-4 flex flex-col justify-center">
+      <h1 className="text-xl font-bold">{account.type} ({account.accountId})</h1>
       <div className="flex">
         <h2 className="mr-auto"></h2>
         <p className={`text-5xl ${plexMono.className}`}>$ {new Intl.NumberFormat("en-us", {style: 'decimal'}).format(account.balance)}</p>

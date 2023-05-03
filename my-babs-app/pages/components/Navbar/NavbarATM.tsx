@@ -1,6 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import ProfileBtn from "../Profile/ProfileBtn"
+import { motion } from "framer-motion"
+import { signOut } from "next-auth/react"
 
 export type NavItem = {
   name: string
@@ -8,6 +10,12 @@ export type NavItem = {
 }
 
 export default function NavbarATM({ username, navItems, setNavItems }) {
+
+  const handleSignout = () => {
+    signOut({ redirect: true, callbackUrl: '/' })
+  }
+
+
   const handleClick = (index: number) => {
     const newNavItems = navItems.map((item: NavItem, i: number) => ({
       ...item,
@@ -32,9 +40,20 @@ export default function NavbarATM({ username, navItems, setNavItems }) {
             ))}
           </ul>
         </div>
-        <div className="flex gap-2 ml-auto items-center">
-          <h1 className='text-[#080325]'>Welcome back <div className="font-bold text-[#080325]">{username}</div></h1>
+        <div className="flex gap-4">
+          <div className="flex gap-2 ml-auto items-center">
+            <h1 className='text-[#080325]'>Welcome back <div className="font-bold text-[#080325]">{username}</div></h1>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-3 py-2 bg-[#69C9D0] rounded-md text-white mt-6"
+            onClick={handleSignout}
+          >
+            Sign Out
+          </motion.button>
         </div>
+
       </div>
     </nav>
   )
