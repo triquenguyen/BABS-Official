@@ -54,7 +54,7 @@ export default function DepositCheck({ handleClose, id, accounts }) {
     }
   }, [id, accounts])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setForm(prevState => ({ ...prevState, [name]: value }))
   }
@@ -106,9 +106,10 @@ export default function DepositCheck({ handleClose, id, accounts }) {
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           >
             <option value="">Select An Account</option>
-            {accounts.map((account: Account) => (<option key={account.id} value={account.id}>
-              {account.type + " " + account.id}
-            </option>))}
+            {accounts.map((account: Account) => (
+              <option key={account.id} value={account.id}>
+                {account.type + " " + account.id}
+              </option>))}
           </select>
 
           <input

@@ -40,10 +40,10 @@ export default function ATMDashboard({ transactions, accounts, totalDeposit, tot
   }
 
   return (
-    <div className='md:container'>
+    <div className='md:container px-16 py-8 '>
       <NavbarATM username={session.user?.name} callbackUrl='/atm/login' navItems={navItems} setNavItems={setNavItems} />
       {/* <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block w-[100%] z-[-1]" alt='bg' /> */}
-      <div className="flex flex-col w-1/2 mx-auto h-full space-y-2">
+      <div className="flex flex-col w-1/2 mx-auto h-full space-y-2 items-center justify-center">
         {checkNavActive("Accounts", navItems) && accounts.map((account: Account) => (<Balance key={account.id} accountId={account.id} balance={account.balance} type={account.type} />))}
         {checkNavActive("Deposit", navItems) && <DepositBtn />}
         {checkNavActive("Withdraw", navItems) && <WithdrawBtn />}

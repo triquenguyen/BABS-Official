@@ -85,7 +85,7 @@ export default function Profile({ handleClose, id, firstName, lastName, email })
 
 
   const handleSignout = () => {
-    signOut({ redirect: true, callbackUrl: '/login' })
+    signOut({ redirect: true, callbackUrl: '/' })
   }
 
   return (
