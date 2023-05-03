@@ -12,8 +12,6 @@ import Footer from './components/Footer'
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export default function Home() {
-  const [test, setTest] = useState<string>("")
-
   return (
     <main className={`${montserrat.className}`}>
       <Image src="/mesh-757.png" width={1920} height={1080} className="hidden fixed xl:block min-h-screen z-[-1]" alt='bg' />

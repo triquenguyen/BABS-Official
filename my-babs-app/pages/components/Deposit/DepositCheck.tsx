@@ -13,13 +13,15 @@ interface DepositProps {
   id: number
   accountId: number
   password: string
+  file: File
 }
 
 const initialDeposit: DepositProps = {
   amount: 0,
   id: 0,
   accountId: 0,
-  password: ''
+  password: '',
+  file: null
 }
 
 const dropIn = {
@@ -42,6 +44,7 @@ const dropIn = {
 
 export default function DepositCheck({ handleClose, id, accounts }) {
   const [form, setForm] = useState<DepositProps>(initialDeposit)
+  const [file, setFile] = useState(null)
   const dispatch = useDispatch()
 
   const refreshData = () => {
@@ -90,6 +93,13 @@ export default function DepositCheck({ handleClose, id, accounts }) {
 
         <h1 className='text-2xl text-[#69C9D0] '>Deposit Checks</h1>
         <form onSubmit={handleDeposit} className="flex flex-col gap-6">
+          <input
+            type="file"
+            name="file"
+            onChange={(e) => setForm({ ...form, file: e.target.files[0] })}
+            className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
+          />
+
           <input
             type="number"
             name='amount'

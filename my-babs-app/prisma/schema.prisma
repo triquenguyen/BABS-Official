@@ -22,6 +22,7 @@ model User {
   totalTransfer Float         @default(0)
   transactions  Transaction[]
   accounts      Account[]
+  checks        Check[]
 }
 
 model Transaction {
@@ -49,4 +50,15 @@ model Account {
   userId    Int?
 
   @@map(name: "accounts")
+}
+
+model Check {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  fileName  String
+  fileData  Bytes
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+
+  @@map(name: "checks")
 }
