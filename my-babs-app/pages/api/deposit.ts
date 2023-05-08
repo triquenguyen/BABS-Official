@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { amount, id, accountId, password, file } = await req.body as { amount: number, id: number, accountId: number, password: string, file: File }
+    const { amount, id, accountId, password, file } = await req.body as { amount: number, id: number, accountId: number, password: string, file: string }
 
     if (amount <= 0) {
       res.status(400).json({ message: 'Amount is not valid! Please enter a valid amount' })
@@ -77,8 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           checks: {
             create: {
-              fileName: file.name,
-              
+              fileName: file,
               createdAt: new Date(),
             }
           }

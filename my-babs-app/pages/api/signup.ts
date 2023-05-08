@@ -11,13 +11,26 @@ interface UserReq {
   pincode: string;
 }
 
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  
+
   if (req.method === 'POST') {
     const { email, firstName, lastName, password, confirmPass, pincode } = await req.body as UserReq;
 
     if (!firstName || !lastName || !email || !password || !pincode || !confirmPass) {
       return res.status(400).json({ message: 'Please enter all fields!' })
+    }
+
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?=.*[a-zA-Z]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+      });
+    }
+
+    if (!/^\d{4}$/.test(pincode)) {
+      return res.status(400).json({ message: 'Invalid pincode. Pincode must be 4 numbers only' });
     }
 
     if (password == confirmPass) {
@@ -59,5 +72,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else {
     res.status(405).end('Method Not Allowed')
     return
-  } 
+  }
 }

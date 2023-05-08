@@ -56,7 +56,6 @@ model Check {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   fileName  String
-  fileData  Bytes
   User      User?    @relation(fields: [userId], references: [id])
   userId    Int?
 

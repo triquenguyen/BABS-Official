@@ -79,7 +79,6 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
           <Balance accounts={accounts} />
           <DepositBtn />
           <TransferBtn />
-          <WithdrawBtn />
           <TransactionBtn />
           <CreateAccountBtn />
         </div>
@@ -91,7 +90,7 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
 
       {show && <DepositCheck show={show} handleClose={close} id={session.user?.id} accounts={accounts} />}
       {showTransfer && <TransferFund showTransfer={showTransfer} handleClose={closeTransfer} id={session.user?.id} />}
-      {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} accounts={accounts} />}
+      {/* {showWithdraw && <Withdraw showWithdraw={showWithdraw} handleClose={closeWithdraw} id={session.user?.id} accounts={accounts} />} */}
       {showTransaction && <Transaction showTransaction={showTransaction} handleClose={closeTransaction} transactions={transactions} />}
       {showAccount && <AccountManagement showAccount={showAccount} handleClose={closeAccount} id={session.user?.id} />}
       {showBalance && <BalanceList showBalance={showBalance} handleClose={closeBalance} accounts={accounts} />}

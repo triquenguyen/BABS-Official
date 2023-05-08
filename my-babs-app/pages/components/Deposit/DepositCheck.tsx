@@ -1,3 +1,5 @@
+"use client"
+
 import axios from 'axios'
 import { useState, useEffect, ChangeEvent } from 'react'
 import Router from 'next/router'
@@ -13,7 +15,7 @@ interface DepositProps {
   id: number
   accountId: number
   password: string
-  file: File
+  file: string
 }
 
 const initialDeposit: DepositProps = {
@@ -21,8 +23,9 @@ const initialDeposit: DepositProps = {
   id: 0,
   accountId: 0,
   password: '',
-  file: null
+  file: ""
 }
+
 
 const dropIn = {
   hidden: { y: "-100vh", opacity: 0 },
@@ -44,7 +47,6 @@ const dropIn = {
 
 export default function DepositCheck({ handleClose, id, accounts }) {
   const [form, setForm] = useState<DepositProps>(initialDeposit)
-  const [file, setFile] = useState(null)
   const dispatch = useDispatch()
 
   const refreshData = () => {
@@ -96,7 +98,7 @@ export default function DepositCheck({ handleClose, id, accounts }) {
           <input
             type="file"
             name="file"
-            onChange={(e) => setForm({ ...form, file: e.target.files[0] })}
+            onChange={(e) => setForm({ ...form, file: e.target.files[0].name })}
             className="text-[#69C9D0] bg-[rgba(255,255,255,0.2)] w-[20em] border-[2px] border-[rgba(0,0,0,0)] focus:ring-[#69C9D0] focus:border-[#69C9D0] focus:outline-none text-sm rounded-lg block p-3 mt-2"
           />
 

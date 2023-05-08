@@ -14,7 +14,7 @@ export default function DepositBtn() {
       whileTap={{ scale: 0.95 }}
       onClick={() => show ? dispatch(setShowAccount(false)) : dispatch(setShowAccount(true))}
       className="flex p-8 bg-[#69C9D0] w-[14em] h-[14em] bg-opacity-70 rounded-md flex-col items-center justify-center gap-4">
-      <Image src="/deposit_check_icon.svg" width={140} height={100} alt='bg' />
+      <Image src="/Icon.svg" width={80} height={100} alt='bg' />
       <button className="">Account Manager</button>
     </motion.div>
   )
