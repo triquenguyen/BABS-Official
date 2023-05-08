@@ -28,8 +28,8 @@ import DepositBtn from './components/Deposit/DepositBtn';
 import TransferBtn from './components/Transfer/TransferBtn';
 import DepositCheck from './components/Deposit/DepositCheck';
 import TransferFund from './components/Transfer/TransferFund';
-import WithdrawBtn from './components/Withdraw/WithdrawBtn';
-import Withdraw from './components/Withdraw/Withdraw';
+// import WithdrawBtn from './components/Withdraw/WithdrawBtn';
+// import Withdraw from './components/Withdraw/Withdraw';
 import TransactionCard from './components/Transaction/TransactionCard';
 import Transaction from './components/Transaction/Transaction';
 import TransactionBtn from './components/Transaction/TransactionBtn';
@@ -79,7 +79,7 @@ export default function dashboard({ transactions, accounts, totalDeposit, totalW
           <Balance accounts={accounts} />
           <DepositBtn />
           <TransferBtn />
-          <WithdrawBtn />
+          {/* <WithdrawBtn /> */}
           <TransactionBtn />
           <CreateAccountBtn />
         </div>
