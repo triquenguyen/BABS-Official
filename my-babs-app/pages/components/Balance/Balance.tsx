@@ -25,7 +25,16 @@ export default function Balance({ accounts }) {
   const show = useSelector((state: RootState) => state.showBalance.showBalance)
   const id = useSelector((state: RootState) => state.accountId.accountId)
   if (!accounts || accounts.length <= id) {
-    return null;
+    return (
+      <div
+        className="rounded-md bg-[#69C9D0] h-[14em] min-w-[26em] w-fit p-8 bg-opacity-70 gap-4 flex flex-col justify-center">
+        <h1 className="text-xl font-bold">No Available Account</h1>
+        <div className="flex flex-col gap-4">
+          <h1 className="ml-auto">Please <span className="font-bold">Create an Account</span> in <span className="font-bold">Account Manager</span></h1>
+          <h1 className="ml-auto">OR <span className="font-bold">Reload</span> to have Account shown</h1>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -34,6 +43,7 @@ export default function Balance({ accounts }) {
       whileTap={{ scale: 0.95 }}
       onClick={() => show ? dispatch(setShowBalance(false)) : dispatch(setShowBalance(true))}
       className="rounded-md w-[30%]">
+
       <BalanceCard accountId={accounts[Number(id)]?.id} balance={accounts[Number(id)]?.balance} type={accounts[Number(id)]?.type} />
     </motion.div>
   )

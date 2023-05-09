@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { setShow } from '../../redux/showSlice'
 import BalanceCard from './BalanceCard'
 import { setAccountId } from '@/pages/redux/accountIdSlice'
+import Balance from './BalanceCard'
 
 interface DepositProps {
   amount: number
