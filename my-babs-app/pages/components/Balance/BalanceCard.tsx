@@ -30,7 +30,7 @@ export default function Balance(account: accountProps) {
       <h1 className="text-xl font-bold">{account.type} ({account.accountId})</h1>
       <div className="flex">
         <h2 className="mr-auto"></h2>
-        <p className={`text-5xl ${plexMono.className}`}>$ {new Intl.NumberFormat("en-us", {style: 'decimal'}).format(account.balance)}</p>
+        <p className={`text-5xl ${plexMono.className}`}>$ {new Intl.NumberFormat("en-us", {style: 'decimal'}).format(Number.parseFloat(account.balance).toFixed(2))}</p>
       </div>
       <h1 className="ml-auto">Available Balance</h1>
     </div>
