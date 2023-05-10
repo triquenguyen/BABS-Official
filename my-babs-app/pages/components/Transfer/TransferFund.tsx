@@ -94,7 +94,7 @@ export default function TransferFund({ handleClose, id }) {
         <h1 className='text-2xl text-[#69C9D0]'>Transfer Funds</h1>
         <form onSubmit={handleDeposit} className="flex flex-col gap-4">
           <input
-            type="number"
+            type="text"
             name='amount'
             onChange={handleChange}
             placeholder='Amount to Transfer'
