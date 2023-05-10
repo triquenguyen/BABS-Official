@@ -10,6 +10,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(400).json({ message: 'Amount is required' })
       return
     }
+
+    if (amount > 5000) {
+      res.status(400).json({ message: 'Please transfer less than $5000 each time' })
+      return
+    }
+
     try {
 
       const user = await prisma.user.findUnique({

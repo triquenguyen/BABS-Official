@@ -91,7 +91,7 @@ export default function Withdraw({ handleClose, id, accounts }) {
         <h1 className='text-2xl text-[#69C9D0]'>Withdraw Money</h1>
         <form onSubmit={handleWithdraw} className="flex flex-col gap-6">
           <input
-            type="number"
+            type="text"
             name='amount'
             onChange={handleChange}
             placeholder='Amount to Withdraw'

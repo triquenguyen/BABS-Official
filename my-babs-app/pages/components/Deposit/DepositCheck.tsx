@@ -103,7 +103,7 @@ export default function DepositCheck({ handleClose, id, accounts }) {
           />
 
           <input
-            type="number"
+            type="text"
             name='amount'
             onChange={handleChange}
             placeholder='Amount to Deposit'
