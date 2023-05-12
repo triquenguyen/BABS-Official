@@ -7,6 +7,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST') {
     const { amount, id, accountId, password } = await req.body as { amount: number, id: number, accountId: number, password: string }
 
+    if (!amount || !accountId || !password) {
+      res.status(400).json({ message: 'Please enter all required fields' })
+      return
+    }
+
     if (amount <= 0) {
       res.status(400).json({ message: 'Amount is not valid! Please enter a valid amount' })
       return

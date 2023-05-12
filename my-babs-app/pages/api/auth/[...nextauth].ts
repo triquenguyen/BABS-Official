@@ -55,7 +55,6 @@ export default NextAuth({
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {

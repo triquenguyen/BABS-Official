@@ -11,8 +11,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id: id },
         select: {
           password: true,
+          accounts: {
+            where: { id: Number(accountId) },
+            select: {
+              balance: true
+            }
+          }
         }
       })
+
 
       const passwordMatch = await bcrypt.compare(password, user?.password)
 
@@ -20,6 +27,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(400).json({ message: `Password is not valid! Please enter a valid password` })
         return
       }
+
+      console.log(user?.accounts[0].balance)
+
+      if (Number(user?.accounts[0].balance) != 0){
+        res.status(400).json({ message: `Please withdraw or transfer all money before deleting this account` })
+        return
+      } 
 
       await prisma.user.update({
         where: { id: id },

@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { prisma } from '@/libs/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
+import axios from "axios";
 
 interface UserReq {
   firstName: string;
@@ -31,6 +32,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!/^\d{4}$/.test(pincode)) {
       return res.status(400).json({ message: 'Invalid pincode. Pincode must be 4 numbers only' });
+    }
+
+    // const response = await axios.post(`https://api.zerobounce.net/v2/validate?api_key=${process.env.ZEROBOUNCE_API_KEY}&email=${email}&ip_address`)
+    const response = await axios.post(`https://api.zerobounce.net/v2/validate?api_key=${process.env.ZEROBOUNCE_API_KEY}&email=${email}&ip_address=`)
+  
+    if (response.data.status != 'valid') {
+      return res.status(400).json({ message: 'Please enter a valid email address' })
     }
 
     if (password == confirmPass) {
